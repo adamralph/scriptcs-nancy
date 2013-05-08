@@ -1,0 +1,8 @@
+bin
+obj
+
+*.suo
+*.user
+
+/src/packages/*
+!/src/packages/StyleCop.MSBuild.*
