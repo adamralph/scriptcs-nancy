@@ -2,7 +2,7 @@
 
 ## About
 
-This is a [Script Pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs) for [scriptcs](https://github.com/scriptcs/scriptcs) that allows you to self-host [Nancy](https://github.com/NancyFx/Nancy).
+A [Script Pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs) for [scriptcs](https://github.com/scriptcs/scriptcs) for self-hosting [Nancy](https://github.com/NancyFx/Nancy).
 
 Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 
@@ -38,18 +38,20 @@ The simplest `NancyPack` method is:
 ```C#
 public void Host(params Type[] moduleTypes)
 ```
-The  hosts your site at `http://localhost:8888` using the default `Bootstrapper` built into ScriptCs.Nancy.
+The  hosts your site at `http://localhost:8888/` using the default `ScriptCs.Nancy.Bootstrapper`.
+
 You can override this behaviour by using one of the richer overloads:
 ```C#
 public void Host(int port, params Type[] moduleTypes)
 public void Host(string baseUriString, params Type[] moduleTypes)
-public void Host(INancyBootstrapper bootstrapper, string baseUriString, params Type[] moduleTypes)
 public void Host(HostConfiguration hostConfiguration, string baseUriString, params Type[] moduleTypes)
-public void Host(HostConfiguration hostConfiguration, INancyBootstrapper bootstrapper, string baseUriString, params Type[] moduleTypes)
+public void Host(INancyBootstrapper bootstrapper, string baseUriString)
+public void Host(INancyBootstrapper bootstrapper, HostConfiguration hostConfiguration, string baseUriString)
+// or equivalent overloads which accept a System.Uri instead of a string for the base URI
 ```
 You can also ignore the methods on `NancyPack` and manage your own host:
 ```C#
-var baseUriString = "http://localhost:8888";
+var baseUriString = "http://localhost:8888/";
 using (var host = new NancyHost(myBootstrapper, new Uri(baseUriString)))
 {
     host.Start();
