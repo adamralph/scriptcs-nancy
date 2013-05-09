@@ -6,3 +6,4 @@ obj
 
 /src/packages/*
 !/src/packages/StyleCop.MSBuild.*
+/src/sample/packages/*
