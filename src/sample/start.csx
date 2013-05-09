@@ -8,10 +8,7 @@ public class IndexModule : NancyModule
 {
 	public IndexModule()
 	{
-		Get["/"] = _ =>
-        {
-			return View["index"]; // in views folder
-		};
+		Get["/"] = _ =>	View["index"]; // in views folder
 	}
 }
 
@@ -19,9 +16,6 @@ public class HelloModule : NancyModule
 {
 	public HelloModule()
 	{
-		Get["/hello"] = _ =>
-        {
-			return "Hello World!";
-		};
+		Get["/hello"] = _ => "Hello World!";
 	}
 }
