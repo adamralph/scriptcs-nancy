@@ -39,6 +39,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="NancyPack.Uri.cs" />
+    <Compile Include="NancyPack.String.cs" />
+    <Compile Include="NancyPack.Quickstart.cs" />
     <Compile Include="RouteDescriptionProvider.cs" />
     <Compile Include="PathProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

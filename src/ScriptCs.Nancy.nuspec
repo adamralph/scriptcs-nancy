@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ScriptCs.Nancy</id>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <title>ScriptCs.Nancy</title>
     <authors>Adam Ralph</authors>
     <projectUrl>https://github.com/adamralph/scriptcs-nancy</projectUrl>
@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/adamralph/scriptcs-nancy/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Nancy Script Pack for scriptcs.</description>
-    <releaseNotes>Breaking: Remove redundant parameters on NancyPack.Host() overloads - https://github.com/adamralph/scriptcs-nancy/issues/1/</releaseNotes>
+    <releaseNotes>TBD</releaseNotes>
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>

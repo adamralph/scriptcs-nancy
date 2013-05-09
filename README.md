@@ -2,7 +2,9 @@
 
 ## About
 
-A [Script Pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs) for [scriptcs](https://github.com/scriptcs/scriptcs) for self-hosting [Nancy](https://github.com/NancyFx/Nancy).
+A [script pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs-master-list) for [scriptcs](https://github.com/scriptcs/scriptcs) for self-hosting [Nancy](https://github.com/NancyFx/Nancy).
+
+ScriptCs.Nancy continues Nancy's journey down the "super-duper-happy-path" by hosting your modules with a single line of code: `Require<NancyPack>().Host();`.
 
 Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 
@@ -10,10 +12,10 @@ Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 
 * Create a folder for your script, e.g. `C:\hellonancy`.
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
-* Create a new file named 'start.csx' containing:
+* Create a new file named 'start.csx' containing the magic line of code and a sample module:
 
-```
-Require<NancyPack>().Host(typeof(SampleModule));
+```C#
+Require<NancyPack>().Host();
 
 public class SampleModule : Nancy.NancyModule
 {
@@ -30,39 +32,71 @@ public class SampleModule : Nancy.NancyModule
 
 Congratulations! You've created your first self-hosted website using scriptcs and Nancy!
 
-For a sample which renders an HTML view, check out the [sample folder](https://github.com/adamralph/scriptcs-nancy/tree/master/src/sample).
+ScriptCs.Nancy will automatically find any modules both in your script and any others which have been loaded using `#load`. The names of all modules found are printed in the console window (at the time of writing, scriptcs adds the prefix `"Submission#0+"`  to scripted module names).
+
+For a sample which renders two views, one HTML and one plain text, check out the [sample folder](https://github.com/adamralph/scriptcs-nancy/tree/master/src/sample).
 
 ## Advanced Usage
 
-The simplest `NancyPack` method is:
+As demonstrated above, the simplest `NancyPack` method is:
 ```C#
-public void Host(params Type[] moduleTypes)
+public void Host()
 ```
 The  hosts your site at `http://localhost:8888/` using the default `ScriptCs.Nancy.Bootstrapper`.
 
 You can override this behaviour by using one of the richer overloads:
 ```C#
-public void Host(int port, params Type[] moduleTypes)
-public void Host(string baseUriString, params Type[] moduleTypes)
-public void Host(HostConfiguration hostConfiguration, string baseUriString, params Type[] moduleTypes)
-public void Host(INancyBootstrapper bootstrapper, string baseUriString)
-public void Host(INancyBootstrapper bootstrapper, HostConfiguration hostConfiguration, string baseUriString)
-// or equivalent overloads which accept a System.Uri instead of a string for the base URI
+public void Host(params Assembly[] moduleAssemblies);
+public void Host(params Type[] moduleTypes);
+
+public void Host(params string[] baseUriStrings);
+public void Host(string baseUriString, IEnumerable<Assembly> moduleAssemblies);
+public void Host(string baseUriString, IEnumerable<Type> moduleTypes);
+
+public void Host(params Uri[] baseUris)
+public void Host(Uri baseUri, IEnumerable<Assembly> moduleAssemblies);
+public void Host(Uri baseUri, HostConfiguration configuration);
+public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies);
+public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Type> moduleTypes);
+public void Host(Uri baseUri, INancyBootstrapper bootstrapper);
+public void Host(Uri baseUri, INancyBootstrapper bootstrapper, HostConfiguration configuration);
+
+public void Host(IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris);
+public void Host(IEnumerable<Type> moduleTypes, params Uri[] baseUris);
+public void Host(HostConfiguration configuration, params Uri[] baseUris);
+public void Host(HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris);
+public void Host(HostConfiguration configuration, IEnumerable<Type> moduleTypes, params Uri[] baseUris);
+public void Host(INancyBootstrapper bootstrapper, params Uri[] baseUris);
+public void Host(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris);
 ```
-You can also ignore the methods on `NancyPack` and manage your own host:
+### Hosting modules in compiled libraries
+Simply call one of the overloads which accepts `Assembly` arguments. E.g.:
+```C#
+Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly);
+```
+Note that this overrides the automatic finding of modules in your scripts. To preserve this, provide an extra assembly reference like so:
+```C#
+Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly, typeof(MyScriptedModule).Assembly);
+```
+All the overloads which accept `Assembly`, `Type` or `INancyBootstrapper` arguments override the automatic finding of modules in your scripts.
+
+### Managing your own host
+You can also ignore the methods on `NancyPack` completely and manage your own host:
 ```C#
 var baseUriString = "http://localhost:8888/";
 using (var host = new NancyHost(myBootstrapper, new Uri(baseUriString)))
 {
     host.Start();
     
-    Console.WriteLine("Nancy is running at " + baseUriString);
+    Console.WriteLine("Nancy is hosted at " + baseUriString);
     Console.WriteLine("Press any key to end");
     Console.ReadKey();
     
     host.Stop();
 }
 ```
+
+In this case ScriptCs is still valuable since it bootstraps your package dependencies and default namespace imports. The trick here is to work out how to write your bootstrapper. ScriptCs.Nancy uses a custom bootstrapper derived from `AutofacNancyBootstrapper`. See the [source](https://github.com/adamralph/scriptcs-nancy/blob/master/src/ScriptCs.Nancy/Bootstrapper.cs "Bootstrapper.cs") for more info.
 
 Have fun!
 
@@ -80,4 +114,4 @@ No pull request is too small. Even whitespace fixes are appreciated. Before you 
 
 ## What do the version numbers mean? ##
 
-ScriptCs.Nancy uses [Semantic Versioning](http://semver.org/). The current release is 0.x which means 'initial development'. Version 1.0 is imminent.
+ScriptCs.Nancy uses [Semantic Versioning](http://semver.org/). The current release is 0.x which means 'initial development'. Version 1.0 will follow a stable release of scriptcs.

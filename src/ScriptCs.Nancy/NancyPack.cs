@@ -5,87 +5,83 @@
 namespace ScriptCs.Nancy
 {
     using System;
-    using System.Globalization;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
 
-    public class NancyPack : IScriptPackContext
+    public partial class NancyPack : IScriptPackContext
     {
-        // quickstart
-        public void Host(params Type[] moduleTypes)
+        public void Host(params Uri[] baseUris)
         {
-            this.Host(8888, moduleTypes);
+            this.Host(new[] { Assembly.GetCallingAssembly() }, baseUris);
         }
 
-        public void Host(int port, params Type[] moduleTypes)
+        public void Host(IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris)
         {
-            this.Host(string.Concat("http://localhost:", port.ToString(CultureInfo.InvariantCulture), "/"), moduleTypes);
+            this.Host(moduleAssemblies.FindNancyModuleTypes(), baseUris);
         }
 
-        // URI strings
-        public void Host(string baseUriString, params Type[] moduleTypes)
+        public void Host(IEnumerable<Type> moduleTypes, params Uri[] baseUris)
         {
-            this.Host(new Uri(baseUriString), moduleTypes);
-        }
-
-        [CLSCompliant(false)]
-        public void Host(HostConfiguration hostConfiguration, string baseUriString, params Type[] moduleTypes)
-        {
-            this.Host(hostConfiguration, new Uri(baseUriString), moduleTypes);
+            this.Host(new Bootstrapper(moduleTypes.ToArray()), baseUris);
         }
 
         [CLSCompliant(false)]
-        public void Host(INancyBootstrapper bootstrapper, string baseUriString)
+        public void Host(HostConfiguration configuration, params Uri[] baseUris)
         {
-            this.Host(bootstrapper, new Uri(baseUriString));
+            this.Host(configuration, new[] { Assembly.GetCallingAssembly() }, baseUris);
         }
 
         [CLSCompliant(false)]
-        public void Host(INancyBootstrapper bootstrapper, HostConfiguration hostConfiguration, string baseUriString)
+        public void Host(HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris)
         {
-            this.Host(bootstrapper, hostConfiguration, new Uri(baseUriString));
-        }
-
-        // main
-        public void Host(Uri baseUri, params Type[] moduleTypes)
-        {
-            this.Host(new Bootstrapper(moduleTypes), baseUri);
+            this.Host(configuration, moduleAssemblies.FindNancyModuleTypes(), baseUris);
         }
 
         [CLSCompliant(false)]
-        public void Host(HostConfiguration hostConfiguration, Uri baseUri, params Type[] moduleTypes)
+        public void Host(HostConfiguration configuration, IEnumerable<Type> moduleTypes, params Uri[] baseUris)
         {
-            this.Host(new Bootstrapper(moduleTypes), hostConfiguration, baseUri);
+            this.Host(new Bootstrapper(moduleTypes.ToArray()), configuration, baseUris);
         }
 
         [CLSCompliant(false)]
-        public void Host(INancyBootstrapper bootstrapper, Uri baseUri)
+        public void Host(INancyBootstrapper bootstrapper, params Uri[] baseUris)
         {
-            using (var host = new NancyHost(bootstrapper, baseUri))
+            Run(bootstrapper, null, baseUris);
+        }
+
+        [CLSCompliant(false)]
+        public void Host(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris)
+        {
+            Run(bootstrapper, configuration, baseUris);
+        }
+
+        private static void Run(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris)
+        {
+            using (var host = configuration == null
+                ? new NancyHost(bootstrapper, baseUris)
+                : new NancyHost(bootstrapper, configuration, baseUris))
             {
-                Run(baseUri, host);
+                host.Start();
+
+                foreach (var baseUri in baseUris)
+                {
+                    Console.WriteLine("Nancy is hosted at " + baseUri.ToString());
+                }
+
+                if (baseUris.Length == 0)
+                {
+                    Console.WriteLine("Nancy is not hosted at any URL");
+                }
+
+                Console.WriteLine("Press any key to end");
+                Console.ReadKey();
+
+                host.Stop();
             }
-        }
-
-        [CLSCompliant(false)]
-        public void Host(INancyBootstrapper bootstrapper, HostConfiguration hostConfiguration, Uri baseUri)
-        {
-            using (var host = new NancyHost(bootstrapper, hostConfiguration, baseUri))
-            {
-                Run(baseUri, host);
-            }
-        }
-
-        private static void Run(Uri baseUri, NancyHost host)
-        {
-            host.Start();
-
-            Console.WriteLine("Nancy is running at " + baseUri.ToString());
-            Console.WriteLine("Press any key to end");
-            Console.ReadKey();
-
-            host.Stop();
         }
     }
 }
