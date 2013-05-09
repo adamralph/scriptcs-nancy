@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/adamralph/scriptcs-nancy/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Nancy Script Pack for scriptcs.</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Breaking: Remove redundant parameters on NancyPack.Host() overloads - https://github.com/adamralph/scriptcs-nancy/issues/1/</releaseNotes>
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>
