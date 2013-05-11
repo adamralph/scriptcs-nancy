@@ -127,7 +127,7 @@ The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyP
 
 You can also ignore the methods on `NancyPack` completely and manage your own host:
 ```C#
-using (var host = new NancyHost(new CustomBootstrapper(), new Uri("http://localhost:8888/")))
+using (var host = new NancyHost(new DefaultNancyPackBootstrapper(typeof(MyModule)), new Uri("http://localhost:8888/")))
 {
     host.Start();    
     Console.ReadKey();
