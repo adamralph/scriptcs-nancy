@@ -1,23 +1,24 @@
 # ScriptCs.Nancy
 
-## About
+A [scriptcs](https://github.com/scriptcs/scriptcs) [script pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs-master-list) for [Nancy](https://github.com/NancyFx/Nancy).
 
-A [script pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs-master-list) for [scriptcs](https://github.com/scriptcs/scriptcs) for self-hosting [Nancy](https://github.com/NancyFx/Nancy).
-
-ScriptCs.Nancy continues Nancy's journey down the "super-duper-happy-path" by hosting your modules with a single line of code: `Require<NancyPack>().Host();`.
+Continue your journey down the super-duper-happy-path by self-hosting Nancy with a single line of code:
+```C#
+Require<NancyPack>().Host();
+```
 
 Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 
 ## Quickstart
 
-* Create a folder for your script, e.g. `C:\hellonancy`.
+* Create a folder, e.g. `C:\hellonancy`.
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
-* Create a new file named 'start.csx' containing the magic line of code and a sample module:
+* Create a file named `start.csx` containing the magic line of code and a sample module:
 
 ```C#
 Require<NancyPack>().Host();
 
-public class SampleModule : Nancy.NancyModule
+public class SampleModule : NancyModule
 {
     public SampleModule()
     {
@@ -28,13 +29,17 @@ public class SampleModule : Nancy.NancyModule
 
 * Run `scriptcs start.csx`.
 
-* Using a browser, navigate to `http://localhost:8888/`.
+* Browse to `http://localhost:8888/`.
 
 Congratulations! You've created your first self-hosted website using scriptcs and Nancy!
 
-ScriptCs.Nancy will automatically find any modules both in your script and any others which have been loaded using `#load`. The names of all modules found are printed in the console window (at the time of writing, scriptcs adds the prefix `"Submission#0+"`  to scripted module names).
+(For a slightly more advanced sample see the [sample folder](https://github.com/adamralph/scriptcs-nancy/tree/master/src/sample).)
 
-For a sample which renders two views, one HTML and one plain text, check out the [sample folder](https://github.com/adamralph/scriptcs-nancy/tree/master/src/sample).
+## How it works
+
+ScriptCs.Nancy automagically finds all modules in your script (including those loaded with [`#load`](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#loading-referenced-scripts "Loading referenced scripts")). The names of all modules found are printed in the console window (at the time of writing, scriptcs adds the prefix `"Submission#0+"` to the names of modules located in scripts).
+
+By default, the base URL of your site is `http://localhost:8888/`. You can easily change this to another URL or even multiple URL's (see 'Advanced Usage'). All base URL's being used are printed in the console window. 
 
 ## Advanced Usage
 
@@ -42,9 +47,8 @@ As demonstrated above, the simplest `NancyPack` method is:
 ```C#
 public void Host()
 ```
-The  hosts your site at `http://localhost:8888/` using the default `ScriptCs.Nancy.Bootstrapper`.
 
-You can override this behaviour by using one of the richer overloads:
+You can also use one of the richer overloads for customised behaviour:
 ```C#
 public void Host(params Assembly[] moduleAssemblies);
 public void Host(params Type[] moduleTypes);
@@ -69,18 +73,49 @@ public void Host(HostConfiguration configuration, IEnumerable<Type> moduleTypes,
 public void Host(INancyBootstrapper bootstrapper, params Uri[] baseUris);
 public void Host(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris);
 ```
-### Hosting modules in compiled libraries
-Simply call one of the overloads which accepts `Assembly` arguments. E.g.:
+
+### Custom URL's
+
+A single URL:
+```C#
+Require<NancyPack>().Host("http://localhost:7777/");
+```
+
+or multiple URL's:
+```C#
+Require<NancyPack>().Host("http://localhost:7777/", "http://localhost/hellonancy/");
+```
+
+### Hosting modules contained in an assembly
+
+After you've installed your assembly (see the [docs](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies "scriptcs documentation")) simply call a `Host()` overload which accepts `Assembly` arguments using the name of one of your compiled modules, e.g. `MyCompiledModule`, like so:
 ```C#
 Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly);
 ```
-Note that this overrides the automatic finding of modules in your scripts. To preserve this, provide an extra assembly reference like so:
+
+**Important:** When you call a `Host()` overload which accepts `Assembly` or `Type` arguments, the automagical finding of modules in your scripts *is disabled*.
+
+For the `Assembly` overloads, you can re-enable automagic by taking the name of one of your scripted modules, e.g. `MyScriptedModule`, and providing an extra assembly reference like so:
 ```C#
 Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly, typeof(MyScriptedModule).Assembly);
 ```
-All the overloads which accept `Assembly`, `Type` or `INancyBootstrapper` arguments override the automatic finding of modules in your scripts.
+
+If you are calling one of the `Type` overloads, you can also specify the types of any scripted modules which you want to be used:
+```C#
+Require<NancyPack>().Host(typeof(MyCompiledModule), typeof(MyScriptedModule));
+```
+
+### Custom bootsrapper
+
+You can use a custom bootstrapper by calling a `Host()` overload which accepts an `INancyBootstrapper`:
+```C#
+Require<NancyPack>().Host(new CustomBoostrapper(...));
+```
+
+The easiest way to write a custom bootstrapper is to derive from `ScriptCs.Nancy.Bootstrapper` (will soon be renamed to `DefaultNancyPackBootstrapper`). At the very least, your bootstrapper needs to provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `ScriptCs.Nancy.Bootstrapper`/`DefaultNancyPackBootstrapper` provides this by taking an array of module types in the constructor. More constructor overloads will be provided in future releases.
 
 ### Managing your own host
+
 You can also ignore the methods on `NancyPack` completely and manage your own host:
 ```C#
 var baseUriString = "http://localhost:8888/";
@@ -96,7 +131,7 @@ using (var host = new NancyHost(myBootstrapper, new Uri(baseUriString)))
 }
 ```
 
-In this case ScriptCs is still valuable since it bootstraps your package dependencies and default namespace imports. The trick here is to work out how to write your bootstrapper. ScriptCs.Nancy uses a custom bootstrapper derived from `AutofacNancyBootstrapper`. See the [source](https://github.com/adamralph/scriptcs-nancy/blob/master/src/ScriptCs.Nancy/Bootstrapper.cs "Bootstrapper.cs") for more info.
+In this case ScriptCs is still valuable since it bootstraps your package dependencies and default namespace imports.
 
 Have fun!
 
