@@ -126,7 +126,7 @@ using (var host = new NancyHost(new CustomBootstrapper(), new Uri("http://localh
 }
 ```
 
-In this case ScriptCs is still valuable since it bootstraps your package dependencies and default namespace imports.
+In this case ScriptCs.Nancy is still valuable since it provides a base bootstrapper implementation, default package dependencies and imports default namespaces.
 
 Have fun!
 
