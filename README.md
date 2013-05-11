@@ -113,7 +113,7 @@ You can use a custom bootstrapper by calling a `Host()` overload which accepts a
 Require<NancyPack>().Host(new CustomBoostrapper(...));
 ```
 
-The easiest way to write a custom bootstrapper is to derive from `ScriptCs.Nancy.Bootstrapper` (will soon be renamed to `DefaultNancyPackBootstrapper`). At the very least, your bootstrapper needs to provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `ScriptCs.Nancy.Bootstrapper`/`DefaultNancyPackBootstrapper` provides this by taking an array of module types in the constructor. More constructor overloads will be provided in future releases.
+The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper`. At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` does this by accepting an array of module types in its constructor. More constructor overloads will be provided in future releases.
 
 ### Managing your own host
 

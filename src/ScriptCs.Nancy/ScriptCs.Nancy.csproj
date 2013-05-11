@@ -38,7 +38,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DefaultNancyPackBootstrapper.cs" />
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="NancyPack.Uri.cs" />
     <Compile Include="NancyPack.String.cs" />

@@ -26,7 +26,7 @@ namespace ScriptCs.Nancy
 
         public void Host(IEnumerable<Type> moduleTypes, params Uri[] baseUris)
         {
-            this.Host(new Bootstrapper(moduleTypes.ToArray()), baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(moduleTypes.ToArray()), baseUris);
         }
 
         [CLSCompliant(false)]
@@ -44,7 +44,7 @@ namespace ScriptCs.Nancy
         [CLSCompliant(false)]
         public void Host(HostConfiguration configuration, IEnumerable<Type> moduleTypes, params Uri[] baseUris)
         {
-            this.Host(new Bootstrapper(moduleTypes.ToArray()), configuration, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(moduleTypes.ToArray()), configuration, baseUris);
         }
 
         [CLSCompliant(false)]

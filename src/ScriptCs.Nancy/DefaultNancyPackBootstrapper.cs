@@ -1,4 +1,4 @@
-﻿// <copyright file="Bootstrapper.cs" company="Adam Ralph">
+﻿// <copyright file="DefaultNancyPackBootstrapper.cs" company="Adam Ralph">
 //  Copyright (c) Adam Ralph. All rights reserved.
 // </copyright>
 
@@ -12,11 +12,11 @@ namespace ScriptCs.Nancy
     using global::Nancy.Bootstrappers.Autofac;
 
     [CLSCompliant(false)]
-    public class Bootstrapper : AutofacNancyBootstrapper
+    public class DefaultNancyPackBootstrapper : AutofacNancyBootstrapper
     {
         private readonly Type[] moduleTypes;
 
-        public Bootstrapper(params Type[] moduleTypes)
+        public DefaultNancyPackBootstrapper(params Type[] moduleTypes)
         {
             this.moduleTypes = moduleTypes.ToArray();
         }
