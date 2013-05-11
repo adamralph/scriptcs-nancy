@@ -12,12 +12,12 @@ namespace ScriptCs.Nancy
         [CLSCompliant(false)]
         public void Initialize(IScriptPackSession session)
         {
-            session.ImportNamespace("Autofac");
             session.ImportNamespace("Nancy");
             session.ImportNamespace("Nancy.Bootstrapper");
-            session.ImportNamespace("Nancy.Bootstrappers.Autofac");
+            session.ImportNamespace("Nancy.Conventions");
+            session.ImportNamespace("Nancy.ErrorHandling");
             session.ImportNamespace("Nancy.Hosting.Self");
-            session.ImportNamespace("Nancy.Routing");
+            session.ImportNamespace("Nancy.ModelBinding");
         }
 
         [CLSCompliant(false)]

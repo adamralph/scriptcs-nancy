@@ -69,12 +69,12 @@ namespace ScriptCs.Nancy
 
                 foreach (var baseUri in baseUris)
                 {
-                    Console.WriteLine("Nancy is hosted at " + baseUri.ToString());
+                    Console.WriteLine("Hosting Nancy at: " + baseUri.ToString());
                 }
 
                 if (baseUris.Length == 0)
                 {
-                    Console.WriteLine("Nancy is not hosted at any URL");
+                    Console.WriteLine("NOT hosting Nancy at any URL");
                 }
 
                 Console.WriteLine("Press any key to end");

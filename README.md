@@ -42,6 +42,14 @@ ScriptCs.Nancy automagically finds all modules in your script (including those l
 
 By default, the base URL of your site is `http://localhost:8888/`. You can easily change this to another URL or even multiple URL's (see 'Advanced Usage'). All base URL's being used are printed in the console window. 
 
+The most commonly used Nancy namespaces are also imported into your script:
+* `Nancy`
+* `Nancy.Bootstrapper`
+* `Nancy.Conventions`
+* `Nancy.ErrorHandling`
+* `Nancy.Hosting.Self`
+* `Nancy.ModelBinding`
+
 ## Advanced Usage
 
 As demonstrated above, the simplest `NancyPack` method is:
