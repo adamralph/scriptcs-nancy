@@ -119,16 +119,10 @@ The easiest way to write a custom bootstrapper is to derive from `ScriptCs.Nancy
 
 You can also ignore the methods on `NancyPack` completely and manage your own host:
 ```C#
-var baseUriString = "http://localhost:8888/";
-using (var host = new NancyHost(myBootstrapper, new Uri(baseUriString)))
+using (var host = new NancyHost(new CustomBootstrapper(), new Uri("http://localhost:8888/")))
 {
-    host.Start();
-    
-    Console.WriteLine("Nancy is hosted at " + baseUriString);
-    Console.WriteLine("Press any key to end");
+    host.Start();    
     Console.ReadKey();
-    
-    host.Stop();
 }
 ```
 
