@@ -50,6 +50,8 @@ The most commonly used Nancy namespaces are also imported into your script:
 * `Nancy.Hosting.Self`
 * `Nancy.ModelBinding`
 
+You can import more namespaces with `using` statements in your script. If you think another namespace should be imported by default, please [create an issue](https://github.com/adamralph/scriptcs-nancy/issues/new/) or [send a pull request](https://help.github.com/articles/creating-a-pull-request/).
+
 ## Advanced Usage
 
 As demonstrated above, the simplest `NancyPack` method is:
