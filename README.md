@@ -38,7 +38,7 @@ Congratulations! You've created your first self-hosted website using scriptcs an
 
 ## How it works
 
-ScriptCs.Nancy automagically finds all modules in your script (including those loaded with [`#load`](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#loading-referenced-scripts "Loading referenced scripts")). The names of all modules found are printed in the console window (at the time of writing, scriptcs adds the prefix `"Submission#0+"` to the names of modules located in scripts).
+ScriptCs.Nancy auto-magically finds all modules in your script (including those loaded with [`#load`](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#loading-referenced-scripts "Loading referenced scripts")). The names of all modules found are printed in the console window (at the time of writing, scriptcs adds the prefix `"Submission#0+"` to the names of modules located in scripts).
 
 By default, the base URL of your site is `http://localhost:8888/`. You can easily change this to another URL or even multiple URL's (see 'Advanced Usage'). All base URL's being used are printed in the console window. 
 
@@ -57,7 +57,7 @@ As demonstrated above, the simplest `NancyPack` method is:
 public void Host()
 ```
 
-You can also use one of the richer overloads for customised behaviour:
+You can also use one of the richer methods for customised behaviour:
 ```C#
 public void Host(params Assembly[] moduleAssemblies);
 public void Host(params Type[] moduleTypes);
@@ -97,44 +97,42 @@ Require<NancyPack>().Host("http://localhost:7777/", "http://localhost/hellonancy
 
 ### Hosting modules contained in an assembly
 
-After you've installed your assembly (see the [docs](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies "scriptcs documentation")) simply call a `Host()` overload which accepts `Assembly` arguments using the name of one of your compiled modules, e.g. `MyCompiledModule`, like so:
+After you've installed your assembly (see the [docs](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies "scriptcs documentation")) simply call a `Host()` method which accepts `Assembly` arguments using the name of one of your compiled modules, e.g. `MyCompiledModule`, like so:
 ```C#
 Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly);
 ```
 
-**Important:** When you call a `Host()` overload which accepts `Assembly` or `Type` arguments, the automagical finding of modules in your scripts *is disabled*.
+**Important:** When you call a `Host()` method which accepts `Assembly` or `Type` arguments, the auto-magical finding of modules in your scripts *is disabled*.
 
-For the `Assembly` overloads, you can re-enable automagic by taking the name of one of your scripted modules, e.g. `MyScriptedModule`, and providing an extra assembly reference like so:
+For the `Assembly` methods, you can re-enable auto-magic by taking the name of one of your scripted modules, e.g. `MyScriptedModule`, and providing an extra assembly reference like so:
 ```C#
 Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly, typeof(MyScriptedModule).Assembly);
 ```
 
-If you are calling one of the `Type` overloads, you can also specify the types of any scripted modules which you want to be used:
+If you are calling one of the `Type` methods, you can also specify the types of any scripted modules which you want to be used:
 ```C#
 Require<NancyPack>().Host(typeof(MyCompiledModule), typeof(MyScriptedModule));
 ```
 
-### Custom bootsrapper
+### Using a custom bootstrapper
 
-You can use a custom bootstrapper by calling a `Host()` overload which accepts an `INancyBootstrapper`:
+You can use a custom bootstrapper by calling a `Host()` method which accepts an `INancyBootstrapper`:
 ```C#
 Require<NancyPack>().Host(new CustomBoostrapper(...));
 ```
 
-The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper`. At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` does this by accepting an array of module types in its constructor. More constructor overloads will be provided in future releases.
+The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper`. At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` does this by accepting an array of module types in its constructor. More constructors will be provided in future releases.
 
-### Managing your own host
+### Managing the host yourself
 
-You can also ignore the methods on `NancyPack` completely and manage your own host:
+You can also manage the lifetime of the host yourself:
 ```C#
-using (var host = new NancyHost(new DefaultNancyPackBootstrapper(typeof(MyModule)), new Uri("http://localhost:8888/")))
+using (var host = new NancyHost(new DefaultNancyPackBootstrapper(typeof(MyModule)), new Uri("http://localhost:88/")))
 {
     host.Start();    
     Console.ReadKey();
 }
 ```
-
-In this case ScriptCs.Nancy is still valuable since it provides a base bootstrapper implementation, default package dependencies and imports default namespaces.
 
 Have fun!
 
@@ -148,7 +146,7 @@ Two common causes:
 
 ## Updates
 
-Releases will be pushed regularly to [Nuget](https://nuget.org/packages/ScriptCs.Nancy/). For update notifications, follow [@adamralph](https://twitter.com/#!/adamralph).
+Releases will be pushed regularly to [NuGet](https://nuget.org/packages/ScriptCs.Nancy/). For update notifications, follow [@adamralph](https://twitter.com/#!/adamralph).
 
 To build manually, clone or fork this repository and see ['How to build'](https://github.com/adamralph/scriptcs-nancy/blob/master/how_to_build.md).
 
