@@ -11,7 +11,8 @@ Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 
 ## Quickstart
 
-* Create a folder, e.g. `C:\hellonancy`.
+* Open a command prompt *as an administrator*.
+* Create a folder, e.g. `mkdir C:\hellonancy`.
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
 * Create a file named `start.csx` containing the magic line of code and a sample module:
 
@@ -134,6 +135,14 @@ using (var host = new NancyHost(myBootstrapper, new Uri(baseUriString)))
 In this case ScriptCs is still valuable since it bootstraps your package dependencies and default namespace imports.
 
 Have fun!
+
+## HttpListenerException
+
+Two common causes:
+
+1. You do not have permission to host an HTTP listener at the desired URL. This can be solved by running your command prompt as an administrator or following the steps described [here](https://github.com/NancyFx/Nancy/wiki/Self-Hosting-Nancy#httplistenerexception).
+
+1. Another process is already listening  at the desired URL. Kill the other process and re-try.
 
 ## Updates
 
