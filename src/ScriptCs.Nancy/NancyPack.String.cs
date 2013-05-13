@@ -8,8 +8,6 @@ namespace ScriptCs.Nancy
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using global::Nancy.Bootstrapper;
-    using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
 
     public partial class NancyPack : IScriptPackContext

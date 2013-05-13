@@ -9,10 +9,10 @@ namespace ScriptCs.Nancy
     using System.Linq;
     using global::Nancy;
     using global::Nancy.Bootstrapper;
-    using global::Nancy.Bootstrappers.Autofac;
+    using global::Nancy.TinyIoc;
 
     [CLSCompliant(false)]
-    public class DefaultNancyPackBootstrapper : AutofacNancyBootstrapper
+    public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
         private readonly Type[] moduleTypes;
 
@@ -34,6 +34,11 @@ namespace ScriptCs.Nancy
         protected override IRootPathProvider RootPathProvider
         {
             get { return new PathProvider(); }
+        }
+
+        // NOTE (adamralph): switch off auto-registration by not calling base
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        {
         }
     }
 }

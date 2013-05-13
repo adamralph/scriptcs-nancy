@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ScriptCs.Nancy</id>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <title>ScriptCs.Nancy</title>
     <authors>Adam Ralph</authors>
     <projectUrl>https://github.com/adamralph/scriptcs-nancy</projectUrl>
@@ -15,9 +15,7 @@ Enhancement (Breaking): Rename Bootstrapper to DefaultNancyPackBootstrapper - ht
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>
-      <dependency id="Autofac" version="2.6.3.862" />
       <dependency id="Nancy" version="0.17.1" />
-      <dependency id="Nancy.Bootstrappers.Autofac" version="0.17.1" />
       <dependency id="Nancy.Hosting.Self" version="0.17.1" />
       <dependency id="ScriptCs.Contracts" version="0.3.2" />
     </dependencies>
