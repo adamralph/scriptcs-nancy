@@ -16,35 +16,24 @@ namespace ScriptCs.Nancy
     {
         public void Host(params Uri[] baseUris)
         {
-            this.Host(new[] { Assembly.GetCallingAssembly() }, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(Assembly.GetCallingAssembly()), baseUris);
         }
 
-        public void Host(IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris)
+        public void Host(IEnumerable<Assembly> assemblies, params Uri[] baseUris)
         {
-            this.Host(moduleAssemblies.FindNancyModuleTypes(), baseUris);
-        }
-
-        public void Host(IEnumerable<Type> moduleTypes, params Uri[] baseUris)
-        {
-            this.Host(new DefaultNancyPackBootstrapper(moduleTypes.ToArray()), baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray()), baseUris);
         }
 
         [CLSCompliant(false)]
         public void Host(HostConfiguration configuration, params Uri[] baseUris)
         {
-            this.Host(configuration, new[] { Assembly.GetCallingAssembly() }, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(Assembly.GetCallingAssembly()), configuration, baseUris);
         }
 
         [CLSCompliant(false)]
-        public void Host(HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris)
+        public void Host(HostConfiguration configuration, IEnumerable<Assembly> assemblies, params Uri[] baseUris)
         {
-            this.Host(configuration, moduleAssemblies.FindNancyModuleTypes(), baseUris);
-        }
-
-        [CLSCompliant(false)]
-        public void Host(HostConfiguration configuration, IEnumerable<Type> moduleTypes, params Uri[] baseUris)
-        {
-            this.Host(new DefaultNancyPackBootstrapper(moduleTypes.ToArray()), configuration, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray()), configuration, baseUris);
         }
 
         [CLSCompliant(false)]

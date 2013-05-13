@@ -13,14 +13,9 @@ namespace ScriptCs.Nancy
 
     public partial class NancyPack : IScriptPackContext
     {
-        public void Host(Uri baseUri, IEnumerable<Assembly> moduleAssemblies)
+        public void Host(Uri baseUri, IEnumerable<Assembly> assemblies)
         {
-            this.Host(moduleAssemblies, baseUri);
-        }
-
-        public void Host(Uri baseUri, IEnumerable<Type> moduleTypes)
-        {
-            this.Host(moduleTypes, baseUri);
+            this.Host(assemblies, baseUri);
         }
 
         [CLSCompliant(false)]
@@ -30,15 +25,9 @@ namespace ScriptCs.Nancy
         }
 
         [CLSCompliant(false)]
-        public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies)
+        public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Assembly> assemblies)
         {
-            this.Host(configuration, moduleAssemblies, baseUri);
-        }
-
-        [CLSCompliant(false)]
-        public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Type> moduleTypes)
-        {
-            this.Host(configuration, moduleTypes, baseUri);
+            this.Host(configuration, assemblies, baseUri);
         }
 
         [CLSCompliant(false)]

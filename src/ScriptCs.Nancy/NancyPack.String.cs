@@ -17,14 +17,9 @@ namespace ScriptCs.Nancy
             this.Host(baseUriStrings.Select(baseUriString => new Uri(baseUriString)).ToArray());
         }
 
-        public void Host(string baseUriString, IEnumerable<Assembly> moduleAssemblies)
+        public void Host(string baseUriString, IEnumerable<Assembly> assemblies)
         {
-            this.Host(moduleAssemblies, new Uri(baseUriString));
-        }
-
-        public void Host(string baseUriString, IEnumerable<Type> moduleTypes)
-        {
-            this.Host(moduleTypes, new Uri(baseUriString));
+            this.Host(assemblies, new Uri(baseUriString));
         }
     }
 }

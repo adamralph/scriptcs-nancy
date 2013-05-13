@@ -7,6 +7,7 @@ namespace ScriptCs.Nancy
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using global::Nancy;
     using global::Nancy.Bootstrapper;
     using global::Nancy.TinyIoc;
@@ -14,16 +15,43 @@ namespace ScriptCs.Nancy
     [CLSCompliant(false)]
     public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
-        private readonly Type[] moduleTypes;
+        private readonly Assembly[] assemblies;
 
-        public DefaultNancyPackBootstrapper(params Type[] moduleTypes)
+        public DefaultNancyPackBootstrapper(params Assembly[] assemblies)
         {
-            this.moduleTypes = moduleTypes.ToArray();
+            this.assemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).Distinct().ToArray();
         }
 
         protected override IEnumerable<ModuleRegistration> Modules
         {
-            get { return this.moduleTypes.Select(type => new ModuleRegistration(type)); }
+            get
+            {
+                foreach (var assembly in this.assemblies)
+                {
+                    Console.WriteLine("Searching assembly: {0}", assembly.FullName);
+                }
+
+                var types = this.assemblies
+                    .SelectMany(assembly =>
+                        assembly
+                            .GetTypes()
+                            .Where(type => typeof(INancyModule).IsAssignableFrom(type)))
+                    .ToArray();
+
+                if (types.Length == 0)
+                {
+                    Console.WriteLine("Didn't find any Nancy modules.");
+                }
+                else
+                {
+                    foreach (var type in types)
+                    {
+                        Console.WriteLine("Found Nancy module: {0}", type.FullName);
+                    }
+                }
+
+                return types.Select(type => new ModuleRegistration(type));
+            }
         }
 
         protected override NancyInternalConfiguration InternalConfiguration

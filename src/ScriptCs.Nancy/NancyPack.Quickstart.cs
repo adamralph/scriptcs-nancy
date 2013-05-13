@@ -17,14 +17,9 @@ namespace ScriptCs.Nancy
             this.Host(DefaultUri);
         }
 
-        public void Host(params Assembly[] moduleAssemblies)
+        public void Host(params Assembly[] assemblies)
         {
-            this.Host(DefaultUri, moduleAssemblies);
-        }
-
-        public void Host(params Type[] moduleTypes)
-        {
-            this.Host(DefaultUri, moduleTypes);
+            this.Host(DefaultUri, assemblies);
         }
    }
 }

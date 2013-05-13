@@ -16,6 +16,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{78537876-7F6D-4A66-B24A-DDA45AD88033}"
+	ProjectSection(SolutionItems) = preProject
+		sample\packages.config = sample\packages.config
+		sample\start.csx = sample\start.csx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "views", "views", "{A943E119-2078-49DA-BF07-4D9E7FAAD4AD}"
+	ProjectSection(SolutionItems) = preProject
+		sample\views\index.html = sample\views\index.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +40,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A943E119-2078-49DA-BF07-4D9E7FAAD4AD} = {78537876-7F6D-4A66-B24A-DDA45AD88033}
 	EndGlobalSection
 EndGlobal

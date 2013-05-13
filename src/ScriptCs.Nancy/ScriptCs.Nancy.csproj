@@ -39,7 +39,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DefaultNancyPackBootstrapper.cs" />
-    <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="NancyPack.Uri.cs" />
     <Compile Include="NancyPack.String.cs" />
     <Compile Include="NancyPack.Quickstart.cs" />

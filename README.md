@@ -34,7 +34,7 @@ public class SampleModule : NancyModule
 
 Congratulations! You've created your first self-hosted website using scriptcs and Nancy!
 
-(For a slightly more advanced sample see the [sample folder](https://github.com/adamralph/scriptcs-nancy/tree/master/src/sample).)
+(For a slightly more advanced sample see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start1.csx).)
 
 ## How it works
 
@@ -61,26 +61,18 @@ public void Host()
 
 You can also use one of the richer methods for customised behaviour:
 ```C#
-public void Host(params Assembly[] moduleAssemblies);
-public void Host(params Type[] moduleTypes);
-
+public void Host(params Assembly[] assemblies);
 public void Host(params string[] baseUriStrings);
-public void Host(string baseUriString, IEnumerable<Assembly> moduleAssemblies);
-public void Host(string baseUriString, IEnumerable<Type> moduleTypes);
-
+public void Host(string baseUriString, IEnumerable<Assembly> assemblies);
 public void Host(params Uri[] baseUris)
-public void Host(Uri baseUri, IEnumerable<Assembly> moduleAssemblies);
+public void Host(Uri baseUri, IEnumerable<Assembly> assemblies);
 public void Host(Uri baseUri, HostConfiguration configuration);
-public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies);
-public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Type> moduleTypes);
+public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Assembly> assemblies);
 public void Host(Uri baseUri, INancyBootstrapper bootstrapper);
 public void Host(Uri baseUri, INancyBootstrapper bootstrapper, HostConfiguration configuration);
-
-public void Host(IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris);
-public void Host(IEnumerable<Type> moduleTypes, params Uri[] baseUris);
+public void Host(IEnumerable<Assembly> assemblies, params Uri[] baseUris);
 public void Host(HostConfiguration configuration, params Uri[] baseUris);
-public void Host(HostConfiguration configuration, IEnumerable<Assembly> moduleAssemblies, params Uri[] baseUris);
-public void Host(HostConfiguration configuration, IEnumerable<Type> moduleTypes, params Uri[] baseUris);
+public void Host(HostConfiguration configuration, IEnumerable<Assembly> assemblies, params Uri[] baseUris);
 public void Host(INancyBootstrapper bootstrapper, params Uri[] baseUris);
 public void Host(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris);
 ```
@@ -104,17 +96,7 @@ After you've installed your assembly (see the [docs](https://github.com/scriptcs
 Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly);
 ```
 
-**Important:** When you call a `Host()` method which accepts `Assembly` or `Type` arguments, the auto-magical finding of modules in your scripts *is disabled*.
-
-For the `Assembly` methods, you can re-enable auto-magic by taking the name of one of your scripted modules, e.g. `MyScriptedModule`, and providing an extra assembly reference like so:
-```C#
-Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly, typeof(MyScriptedModule).Assembly);
-```
-
-If you are calling one of the `Type` methods, you can also specify the types of any scripted modules which you want to be used:
-```C#
-Require<NancyPack>().Host(typeof(MyCompiledModule), typeof(MyScriptedModule));
-```
+Any modules found in the assembly/assemblies are added to those found in your script.
 
 ### Using a custom bootstrapper
 
@@ -123,13 +105,17 @@ You can use a custom bootstrapper by calling a `Host()` method which accepts an 
 Require<NancyPack>().Host(new CustomBoostrapper(...));
 ```
 
-The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper`. At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` does this by accepting an array of module types in its constructor. More constructors will be provided in future releases.
+The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper`.
+
+At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` disables auto registration using the [recommended method](https://github.com/NancyFx/Nancy/wiki/Bootstrapper#ignoring-assemblies-when-using-autoregister). Instead of using auto registration, `DefaultNancyPackBootstrapper` accepts an array of assemblies in its constructor which it searches for modules in addition to searching your script.
+
+For an example of a custom bootstrapper, see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx). For more info on bootstrapping, see the [docs](https://github.com/NancyFx/Nancy/wiki/Bootstrapper).
 
 ### Managing the host yourself
 
 You can also manage the lifetime of the host yourself:
 ```C#
-using (var host = new NancyHost(new DefaultNancyPackBootstrapper(typeof(MyModule)), new Uri("http://localhost:88/")))
+using (var host = new NancyHost(new DefaultNancyPackBootstrapper(), new Uri("http://localhost:88/")))
 {
     host.Start();    
     Console.ReadKey();
