@@ -6,36 +6,49 @@ namespace ScriptCs.Nancy
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using global::Nancy;
     using global::Nancy.Bootstrapper;
+    using global::Nancy.Hosting.Self;
     using global::Nancy.TinyIoc;
 
     [CLSCompliant(false)]
     public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
-        private readonly Assembly[] assemblies;
+        private Assembly[] assemblies;
 
         public DefaultNancyPackBootstrapper(params Assembly[] assemblies)
         {
-            this.assemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).Distinct().ToArray();
+            this.assemblies = assemblies.Where(assembly => assembly != null).ToArray();
+        }
+
+        public IEnumerable<Assembly> Assemblies
+        {
+            get { return this.assemblies.Select(x => x); }
+
+            set { this.assemblies = value == null ? new Assembly[0] : value.Where(assembly => assembly != null).ToArray(); }
         }
 
         protected override IEnumerable<ModuleRegistration> Modules
         {
             get
             {
-                foreach (var assembly in this.assemblies)
+                var assembliesToSearch = this.assemblies
+                    .Concat(new StackTrace().GetFrames()
+                        .Select(frame => frame.GetMethod().DeclaringType.Assembly))
+                    .Concat(AppDomain.CurrentDomain.GetAssemblies())
+                    .Distinct()
+                    .Except(new[] { this.GetType().Assembly, typeof(DefaultNancyBootstrapper).Assembly, typeof(NancyHost).Assembly }).ToArray();
+
+                foreach (var assembly in assembliesToSearch)
                 {
                     Console.WriteLine("Searching assembly: {0}", assembly.FullName);
                 }
 
-                var types = this.assemblies
-                    .SelectMany(assembly =>
-                        assembly
-                            .GetTypes()
-                            .Where(type => typeof(INancyModule).IsAssignableFrom(type)))
+                var types = assembliesToSearch.SelectMany(assembly =>
+                        assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsGenericTypeDefinition && typeof(INancyModule).IsAssignableFrom(type)))
                     .ToArray();
 
                 if (types.Length == 0)

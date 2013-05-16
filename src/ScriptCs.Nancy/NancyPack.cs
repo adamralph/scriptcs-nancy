@@ -12,28 +12,29 @@ namespace ScriptCs.Nancy
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
 
+    // TODO (Adam) convert to calling NancyPack.State
     public partial class NancyPack : IScriptPackContext
     {
         public void Host(params Uri[] baseUris)
         {
-            this.Host(new DefaultNancyPackBootstrapper(Assembly.GetCallingAssembly()), baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(), baseUris);
         }
 
         public void Host(IEnumerable<Assembly> assemblies, params Uri[] baseUris)
         {
-            this.Host(new DefaultNancyPackBootstrapper(assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray()), baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(assemblies.ToArray()), baseUris);
         }
 
         [CLSCompliant(false)]
         public void Host(HostConfiguration configuration, params Uri[] baseUris)
         {
-            this.Host(new DefaultNancyPackBootstrapper(Assembly.GetCallingAssembly()), configuration, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(), configuration, baseUris);
         }
 
         [CLSCompliant(false)]
         public void Host(HostConfiguration configuration, IEnumerable<Assembly> assemblies, params Uri[] baseUris)
         {
-            this.Host(new DefaultNancyPackBootstrapper(assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray()), configuration, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(assemblies.ToArray()), configuration, baseUris);
         }
 
         [CLSCompliant(false)]
