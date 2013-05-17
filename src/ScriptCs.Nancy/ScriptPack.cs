@@ -15,9 +15,12 @@ namespace ScriptCs.Nancy
             session.ImportNamespace("Nancy");
             session.ImportNamespace("Nancy.Bootstrapper");
             session.ImportNamespace("Nancy.Conventions");
+            session.ImportNamespace("Nancy.Cryptography");
             session.ImportNamespace("Nancy.ErrorHandling");
             session.ImportNamespace("Nancy.Hosting.Self");
             session.ImportNamespace("Nancy.ModelBinding");
+            session.ImportNamespace("Nancy.Security");
+            session.ImportNamespace("Nancy.Validation");
         }
 
         [CLSCompliant(false)]

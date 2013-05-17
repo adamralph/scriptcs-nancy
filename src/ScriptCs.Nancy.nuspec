@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ScriptCs.Nancy</id>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <title>ScriptCs.Nancy</title>
     <authors>Adam Ralph</authors>
     <projectUrl>https://github.com/adamralph/scriptcs-nancy</projectUrl>
@@ -10,8 +10,7 @@
     <licenseUrl>https://github.com/adamralph/scriptcs-nancy/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Nancy script pack for scriptcs. Continue your journey down the super-duper-happy-path by self-hosting Nancy with a single line of code: Require&lt;NancyPack&gt;().Host();</description>
-    <releaseNotes>Enhancement: Remove Autofac dependency - https://github.com/adamralph/scriptcs-nancy/issues/4/
-Enhancement (Breaking): Move module finding into default bootstrapper - https://github.com/adamralph/scriptcs-nancy/issues/15/</releaseNotes>
+    <releaseNotes>Enhancement: Import Cryptography, Security and Validation namespaces into scripts - https://github.com/adamralph/scriptcs-nancy/issues/17/</releaseNotes>
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>

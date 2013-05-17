@@ -46,9 +46,12 @@ The most commonly used Nancy namespaces are also imported into your script:
 * `Nancy`
 * `Nancy.Bootstrapper`
 * `Nancy.Conventions`
+* `Nancy.Cryptography`
 * `Nancy.ErrorHandling`
 * `Nancy.Hosting.Self`
 * `Nancy.ModelBinding`
+* `Nancy.Security`
+* `Nancy.Validation`
 
 You can import more namespaces with `using` statements in your script. If you think another namespace should be imported by default, please [create an issue](https://github.com/adamralph/scriptcs-nancy/issues/new/) or [send a pull request](https://help.github.com/articles/creating-a-pull-request/).
 
@@ -105,11 +108,11 @@ You can use a custom bootstrapper by calling a `Host()` method which accepts an 
 Require<NancyPack>().Host(new CustomBoostrapper(...));
 ```
 
-The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper`.
+The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper` as show in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
 
 At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` disables auto registration using the [recommended method](https://github.com/NancyFx/Nancy/wiki/Bootstrapper#ignoring-assemblies-when-using-autoregister). Instead of using auto registration, `DefaultNancyPackBootstrapper` accepts an array of assemblies in its constructor which it searches for modules in addition to searching your script.
 
-For an example of a custom bootstrapper, see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx). For more info on bootstrapping, see the [docs](https://github.com/NancyFx/Nancy/wiki/Bootstrapper).
+For more info on bootstrapping, see the [docs](https://github.com/NancyFx/Nancy/wiki/Bootstrapper).
 
 ### Managing the host yourself
 
