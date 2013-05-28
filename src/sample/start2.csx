@@ -6,17 +6,9 @@ Require<NancyPack>().Host(new CustomBootstrapper(), new Uri("http://localhost:88
 
 public class IndexModule : NancyModule
 {
-    public IndexModule()
+    public IndexModule(IGreetings greetings)
     {
-        Get["/"] = _ =>	View["index"]; // located in views folder
-    }
-}
-
-public class HelloModule : NancyModule
-{
-    public HelloModule(IGreetings greetings)
-    {
-        Get["/hello"] = _ => greetings.Hello;
+        Get["/"] = _ => greetings.Hello;
     }
 }
 

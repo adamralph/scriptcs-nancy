@@ -15,27 +15,44 @@ namespace ScriptCs.Nancy
     [CLSCompliant(false)]
     public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
-        private readonly Assembly[] assemblies;
-
-        public DefaultNancyPackBootstrapper(params Assembly[] assemblies)
+        protected override IEnumerable<Func<System.Reflection.Assembly, bool>> AutoRegisterIgnoredAssemblies
         {
-            this.assemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).Distinct().ToArray();
+            get
+            {
+                return base.AutoRegisterIgnoredAssemblies
+                    .Concat(new Func<Assembly, bool>[]
+                        {
+                            assembly => assembly == typeof(DefaultNancyBootstrapper).Assembly,
+                            assembly => assembly.FullName.StartsWith("Autofac,", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("Autofac.", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("Common.Logging", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("log4net,", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("Nancy,", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("Nancy.", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("NuGet.", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("PowerArgs,", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("Roslyn.", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("scriptcs,", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("ScriptCs.", StringComparison.InvariantCulture),
+                            assembly => assembly.FullName.StartsWith("ServiceStack.", StringComparison.InvariantCulture),
+                        });
+            }
         }
 
         protected override IEnumerable<ModuleRegistration> Modules
         {
             get
             {
-                foreach (var assembly in this.assemblies)
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(assembly => !this.AutoRegisterIgnoredAssemblies.Any(ignore => ignore(assembly))).ToArray();
+
+                foreach (var assembly in assemblies.OrderBy(asm => asm.FullName))
                 {
                     Console.WriteLine("Searching assembly: {0}", assembly.FullName);
                 }
 
-                var types = this.assemblies
-                    .SelectMany(assembly =>
-                        assembly
-                            .GetTypes()
-                            .Where(type => typeof(INancyModule).IsAssignableFrom(type)))
+                var types = assemblies.SelectMany(assembly =>
+                        assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsGenericTypeDefinition && typeof(INancyModule).IsAssignableFrom(type)))
                     .ToArray();
 
                 if (types.Length == 0)

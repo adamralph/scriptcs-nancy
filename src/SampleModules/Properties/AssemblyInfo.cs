@@ -6,8 +6,8 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("ScriptCs.Nancy")]
-[assembly: AssemblyDescription("Nancy Script Pack for scriptcs")]
+[assembly: AssemblyTitle("SampleModules")]
+[assembly: AssemblyDescription("Sample modules for testing the Nancy Script Pack for scriptcs")]
 [assembly: AssemblyCompany("Adam Ralph")]
 [assembly: AssemblyProduct("ScriptCs.Nancy")]
 [assembly: AssemblyCopyright("Copyright © Adam Ralph 2013")]
@@ -15,6 +15,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 
-[assembly: AssemblyVersion("0.7.0")]
-[assembly: AssemblyFileVersion("0.7.0")]
-[assembly: AssemblyInformationalVersion("0.7.0")]
+[assembly: AssemblyVersion("0.0.0")]
+[assembly: AssemblyFileVersion("0.0.0")]
+[assembly: AssemblyInformationalVersion("0.0.0")]

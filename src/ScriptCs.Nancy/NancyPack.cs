@@ -5,9 +5,6 @@
 namespace ScriptCs.Nancy
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
@@ -16,24 +13,13 @@ namespace ScriptCs.Nancy
     {
         public void Host(params Uri[] baseUris)
         {
-            this.Host(new DefaultNancyPackBootstrapper(Assembly.GetCallingAssembly()), baseUris);
-        }
-
-        public void Host(IEnumerable<Assembly> assemblies, params Uri[] baseUris)
-        {
-            this.Host(new DefaultNancyPackBootstrapper(assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray()), baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(), baseUris);
         }
 
         [CLSCompliant(false)]
         public void Host(HostConfiguration configuration, params Uri[] baseUris)
         {
-            this.Host(new DefaultNancyPackBootstrapper(Assembly.GetCallingAssembly()), configuration, baseUris);
-        }
-
-        [CLSCompliant(false)]
-        public void Host(HostConfiguration configuration, IEnumerable<Assembly> assemblies, params Uri[] baseUris)
-        {
-            this.Host(new DefaultNancyPackBootstrapper(assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray()), configuration, baseUris);
+            this.Host(new DefaultNancyPackBootstrapper(), configuration, baseUris);
         }
 
         [CLSCompliant(false)]

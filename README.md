@@ -64,18 +64,15 @@ public void Host()
 
 You can also use one of the richer methods for customised behaviour:
 ```C#
-public void Host(params Assembly[] assemblies);
+// single or multiple URI's using either string or System.Uri arguments
 public void Host(params string[] baseUriStrings);
-public void Host(string baseUriString, IEnumerable<Assembly> assemblies);
 public void Host(params Uri[] baseUris)
-public void Host(Uri baseUri, IEnumerable<Assembly> assemblies);
+// single URI with a custom HostConfiguration and/or INancyBootstrapper
 public void Host(Uri baseUri, HostConfiguration configuration);
-public void Host(Uri baseUri, HostConfiguration configuration, IEnumerable<Assembly> assemblies);
 public void Host(Uri baseUri, INancyBootstrapper bootstrapper);
 public void Host(Uri baseUri, INancyBootstrapper bootstrapper, HostConfiguration configuration);
-public void Host(IEnumerable<Assembly> assemblies, params Uri[] baseUris);
+// single or multiple URI's with a custom HostConfiguration and/or INancyBootstrapper
 public void Host(HostConfiguration configuration, params Uri[] baseUris);
-public void Host(HostConfiguration configuration, IEnumerable<Assembly> assemblies, params Uri[] baseUris);
 public void Host(INancyBootstrapper bootstrapper, params Uri[] baseUris);
 public void Host(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris);
 ```
@@ -87,19 +84,14 @@ A single URL:
 Require<NancyPack>().Host("http://localhost:7777/");
 ```
 
-or multiple URL's:
+Multiple URL's:
 ```C#
 Require<NancyPack>().Host("http://localhost:7777/", "http://localhost/hellonancy/");
 ```
 
 ### Hosting modules contained in an assembly
 
-After you've installed your assembly (see the [docs](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies "scriptcs documentation")) simply call a `Host()` method which accepts `Assembly` arguments using the name of one of your compiled modules, e.g. `MyCompiledModule`, like so:
-```C#
-Require<NancyPack>().Host(typeof(MyCompiledModule).Assembly);
-```
-
-Any modules found in the assembly/assemblies are added to those found in your script.
+Simply install your assembly (see the [docs](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies "scriptcs documentation")) and `NancyPack` will automatically find any modules it contains.
 
 ### Using a custom bootstrapper
 
@@ -110,9 +102,9 @@ Require<NancyPack>().Host(new CustomBoostrapper(...));
 
 The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper` as show in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
 
-At the very least, your bootstrapper must provide a way to register modules since Nancy's built in auto registration does not work in the scriptcs environment. `DefaultNancyPackBootstrapper` disables auto registration using the [recommended method](https://github.com/NancyFx/Nancy/wiki/Bootstrapper#ignoring-assemblies-when-using-autoregister). Instead of using auto registration, `DefaultNancyPackBootstrapper` accepts an array of assemblies in its constructor which it searches for modules in addition to searching your script.
+### Registering dependencies
 
-For more info on bootstrapping, see the [docs](https://github.com/NancyFx/Nancy/wiki/Bootstrapper).
+Nancy's built in auto registration does not work in the scriptcs environment. To register dependencies you need to provide a custom bootstrapper (see above) which [manually registers your dependencies](https://github.com/NancyFx/Nancy/wiki/Bootstrapping-nancy#part-2---manually-registering-dependencies "Manually Registering Dependencies") as shown in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
 
 ### Managing the host yourself
 

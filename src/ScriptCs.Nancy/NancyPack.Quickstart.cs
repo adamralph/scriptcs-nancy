@@ -5,7 +5,6 @@
 namespace ScriptCs.Nancy
 {
     using System;
-    using System.Reflection;
     using ScriptCs.Contracts;
 
     public partial class NancyPack : IScriptPackContext
@@ -15,11 +14,6 @@ namespace ScriptCs.Nancy
         public void Host()
         {
             this.Host(DefaultUri);
-        }
-
-        public void Host(params Assembly[] assemblies)
-        {
-            this.Host(DefaultUri, assemblies);
         }
    }
 }
