@@ -11,6 +11,7 @@ Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 
 ## Quickstart
 
+* Ensure you have [scriptcs installed](https://github.com/scriptcs/scriptcs#getting-scriptcs).
 * Open a command prompt *as an administrator*.
 * Create a folder, e.g. `mkdir C:\hellonancy`.
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
