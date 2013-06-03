@@ -2,6 +2,9 @@ require 'albacore'
 require 'fileutils'
 
 nuget_command = "src/.nuget/NuGet.exe"
+solution = "src/ScriptCs.Nancy.sln"
+output = "bin"
+nuspec = "src/ScriptCs.Nancy.nuspec"
 
 Albacore.configure do |config|
   config.log_level = :verbose
@@ -12,22 +15,22 @@ task :default => [ :pack ]
 
 desc "Clean solution"
 msbuild :clean do |msb|
-  FileUtils.rmtree "bin"
+  FileUtils.rmtree output
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Clean ]
-  msb.solution = "src/ScriptCs.Nancy.sln"
+  msb.solution = solution
 end
 
 desc "Build solution"
 msbuild :build => [:clean] do |msb|
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Build ]
-  msb.solution = "src/ScriptCs.Nancy.sln"
+  msb.solution = solution
 end
 
 desc "create the nuget package"
 exec :pack => [:build] do |cmd|
-  FileUtils.mkpath "bin"
+  FileUtils.mkpath output
   cmd.command = nuget_command
-  cmd.parameters "pack src/ScriptCs.Nancy.nuspec -OutputDirectory bin"
+  cmd.parameters "pack " + nuspec + " -OutputDirectory " + output
 end
