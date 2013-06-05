@@ -46,7 +46,7 @@
     <Compile Include="PathProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptPack.cs" />
-    <Compile Include="NancyPack.cs" />
+    <Compile Include="NancyPack.Uris.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
