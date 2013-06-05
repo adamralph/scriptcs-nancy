@@ -2,7 +2,8 @@
 // scriptcs -install
 // scriptcs start1.csx
 
-Require<NancyPack>().Host();
+var n = Require<NancyPack>();
+n.Start();
 
 public class IndexModule : NancyModule
 {

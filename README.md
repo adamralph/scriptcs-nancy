@@ -35,7 +35,7 @@ public class SampleModule : NancyModule
 
 Congratulations! You've created your first self-hosted website using scriptcs and Nancy!
 
-(For a slightly more advanced sample see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start1.csx).)
+(For a slightly more advanced sample see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host1.csx).)
 
 ## How it works
 
@@ -101,11 +101,11 @@ You can use a custom bootstrapper by calling a `Host()` method which accepts an 
 Require<NancyPack>().Host(new CustomBoostrapper(...));
 ```
 
-The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper` as show in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
+The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper` as show in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host2.csx).
 
 ### Registering dependencies
 
-Nancy's built in auto registration does not work in the scriptcs environment. To register dependencies you need to provide a custom bootstrapper (see above) which [manually registers your dependencies](https://github.com/NancyFx/Nancy/wiki/Bootstrapping-nancy#part-2---manually-registering-dependencies "Manually Registering Dependencies") as shown in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
+Nancy's built in auto registration does not work in the scriptcs environment. To register dependencies you need to provide a custom bootstrapper (see above) which [manually registers your dependencies](https://github.com/NancyFx/Nancy/wiki/Bootstrapping-nancy#part-2---manually-registering-dependencies "Manually Registering Dependencies") as shown in [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host2.csx).
 
 ### Managing the host yourself
 
