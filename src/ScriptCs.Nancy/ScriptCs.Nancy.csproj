@@ -38,15 +38,13 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Guard.cs" />
+    <Compile Include="NancyPack.cs" />
     <Compile Include="DefaultNancyPackBootstrapper.cs" />
-    <Compile Include="NancyPack.Uri.cs" />
-    <Compile Include="NancyPack.String.cs" />
-    <Compile Include="NancyPack.Quickstart.cs" />
     <Compile Include="RouteDescriptionProvider.cs" />
     <Compile Include="PathProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptPack.cs" />
-    <Compile Include="NancyPack.Uris.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

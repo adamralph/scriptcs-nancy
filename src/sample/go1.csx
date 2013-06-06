@@ -3,7 +3,7 @@
 // scriptcs start1.csx
 
 var n = Require<NancyPack>();
-n.Start();
+//n.Start();
 
 public class IndexModule : NancyModule
 {
