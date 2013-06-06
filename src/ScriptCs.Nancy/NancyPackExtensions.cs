@@ -92,6 +92,7 @@ namespace ScriptCs.Nancy
             pack.Go();
             Console.WriteLine("Press any key to stop hosting Nancy");
             Console.ReadKey();
+            Console.WriteLine();
             pack.Stop();
         }
     }
