@@ -7,7 +7,6 @@ namespace ScriptCs.Nancy
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Globalization;
     using System.Linq;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
@@ -18,7 +17,6 @@ namespace ScriptCs.Nancy
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
         private ReadOnlyCollection<Uri> uris;
-
         private NancyHost host;
 
         public NancyPack()
@@ -64,71 +62,6 @@ namespace ScriptCs.Nancy
         // and latest master has been pushed to Chocolatey
         ////[CLSCompliant(false)]
         internal HostConfiguration Config { get; set; }
-
-        [CLSCompliant(false)]
-        public NancyPack Use(INancyBootstrapper bootstrapper)
-        {
-            this.Boot = bootstrapper;
-            return this;
-        }
-
-        [CLSCompliant(false)]
-        public NancyPack Use(HostConfiguration configuration)
-        {
-            this.Config = configuration;
-            return this;
-        }
-
-        public NancyPack At(params Uri[] uris)
-        {
-            this.Uris = uris;
-            return this;
-        }
-
-        public NancyPack At(params string[] uriStrings)
-        {
-            this.Uris = uriStrings.Select(uriString => new Uri(uriString));
-            return this;
-        }
-
-        public NancyPack At(params int[] ports)
-        {
-            this.Uris = ports.Select(port =>
-                new Uri(string.Format(CultureInfo.InvariantCulture, "http://localhost:{0}/", port.ToString(CultureInfo.InvariantCulture))));
-
-            return this;
-        }
-
-        public NancyPack Reset()
-        {
-            return this.ResetUris().ResetConfig().ResetBoot();
-        }
-
-        public NancyPack ResetBoot()
-        {
-            this.Boot = new DefaultNancyPackBootstrapper();
-            return this;
-        }
-
-        public NancyPack ResetConfig()
-        {
-            this.Config = new HostConfiguration();
-            return this;
-        }
-
-        public NancyPack ResetUris()
-        {
-            this.Uris = DefaultUris;
-            return this;
-        }
-
-        public void Host()
-        {
-            this.Go();
-            Console.WriteLine("Press any key to stop hosting Nancy");
-            Console.ReadKey();
-            this.Stop();
-        }
 
         public NancyPack Go()
         {

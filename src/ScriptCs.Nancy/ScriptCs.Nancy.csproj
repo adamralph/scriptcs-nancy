@@ -38,6 +38,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="NancyPackExtensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="NancyPack.cs" />
     <Compile Include="DefaultNancyPackBootstrapper.cs" />
