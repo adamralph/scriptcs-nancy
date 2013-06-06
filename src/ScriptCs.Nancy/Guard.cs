@@ -89,6 +89,15 @@ namespace ScriptCs.Nancy
             }
         }
 
+        [DebuggerStepThrough]
+        public static void AgainstNullProperty<TProperty>(string propertyName, [ValidatedNotNull]TProperty property) where TProperty : class
+        {
+            if (property == null)
+            {
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "{0} property is null.", propertyName));
+            }
+        }
+
         private static bool IsNullableType(this Type type)
         {
             return !type.IsValueType || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
