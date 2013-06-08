@@ -18,8 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{78537876-7F6D-4A66-B24A-DDA45AD88033}"
 	ProjectSection(SolutionItems) = preProject
+		sample\go1.csx = sample\go1.csx
+		sample\host1.csx = sample\host1.csx
+		sample\host2.csx = sample\host2.csx
 		sample\packages.config = sample\packages.config
-		sample\start.csx = sample\start.csx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "views", "views", "{A943E119-2078-49DA-BF07-4D9E7FAAD4AD}"

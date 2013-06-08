@@ -35,7 +35,7 @@ public class SampleModule : NancyModule
 
 Congratulations! You've created your first self-hosted website using scriptcs and Nancy!
 
-(For a slightly more advanced sample see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start1.csx).)
+(For a slightly more advanced sample see [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host1.csx).)
 
 ## How it works
 
@@ -58,36 +58,16 @@ You can import more namespaces with `using` statements in your script. If you th
 
 ## Advanced Usage
 
-As demonstrated above, the simplest `NancyPack` method is:
-```C#
-public void Host()
-```
-
-You can also use one of the richer methods for customised behaviour:
-```C#
-// single or multiple URI's using either string or System.Uri arguments
-public void Host(params string[] baseUriStrings);
-public void Host(params Uri[] baseUris)
-// single URI with a custom HostConfiguration and/or INancyBootstrapper
-public void Host(Uri baseUri, HostConfiguration configuration);
-public void Host(Uri baseUri, INancyBootstrapper bootstrapper);
-public void Host(Uri baseUri, INancyBootstrapper bootstrapper, HostConfiguration configuration);
-// single or multiple URI's with a custom HostConfiguration and/or INancyBootstrapper
-public void Host(HostConfiguration configuration, params Uri[] baseUris);
-public void Host(INancyBootstrapper bootstrapper, params Uri[] baseUris);
-public void Host(INancyBootstrapper bootstrapper, HostConfiguration configuration, params Uri[] baseUris);
-```
-
 ### Custom URL's
 
 A single URL:
 ```C#
-Require<NancyPack>().Host("http://localhost:7777/");
+Require<NancyPack>().At("http://localhost:7777/").Host();
 ```
 
 Multiple URL's:
 ```C#
-Require<NancyPack>().Host("http://localhost:7777/", "http://localhost/hellonancy/");
+Require<NancyPack>().At("http://localhost:7777/", "http://localhost/hellonancy/").Host();
 ```
 
 ### Hosting modules contained in an assembly
@@ -96,22 +76,21 @@ Simply install your assembly (see the [docs](https://github.com/scriptcs/scriptc
 
 ### Using a custom bootstrapper
 
-You can use a custom bootstrapper by calling a `Host()` method which accepts an `INancyBootstrapper`:
 ```C#
-Require<NancyPack>().Host(new CustomBoostrapper(...));
+Require<NancyPack>().Use(new CustomBoostrapper(...)).Host();
 ```
 
-The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper` as show in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
+The easiest way to write a custom bootstrapper is to inherit from `DefaultNancyPackBootstrapper` as show in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host2.csx).
 
 ### Registering dependencies
 
-Nancy's built in auto registration does not work in the scriptcs environment. To register dependencies you need to provide a custom bootstrapper (see above) which [manually registers your dependencies](https://github.com/NancyFx/Nancy/wiki/Bootstrapping-nancy#part-2---manually-registering-dependencies "Manually Registering Dependencies") as shown in [this example](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/start2.csx).
+Nancy's built in auto registration does not work in the scriptcs environment. To register dependencies you need to provide a custom bootstrapper (see above) which [manually registers your dependencies](https://github.com/NancyFx/Nancy/wiki/Bootstrapping-nancy#part-2---manually-registering-dependencies "Manually Registering Dependencies") as shown in [this sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host2.csx).
 
 ### Managing the host yourself
 
 You can also manage the lifetime of the host yourself:
 ```C#
-using (var host = new NancyHost(new DefaultNancyPackBootstrapper(), new Uri("http://localhost:88/")))
+using (var host = new NancyHost(new DefaultNancyPackBootstrapper(), new Uri("http://localhost:8888/")))
 {
     host.Start();    
     Console.ReadKey();
