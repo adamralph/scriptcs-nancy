@@ -16,8 +16,11 @@ namespace ScriptCs.Nancy
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
+        private INancyBootstrapper bootstrapper;
+        private HostConfiguration configuration;
         private ReadOnlyCollection<Uri> uris;
         private NancyHost host;
+        private bool isWaiting;
 
         public NancyPack()
         {
@@ -35,7 +38,21 @@ namespace ScriptCs.Nancy
         }
 
         [CLSCompliant(false)]
-        public INancyBootstrapper Boot { get; set; }
+        public INancyBootstrapper Boot
+        {
+            get
+            {
+                return this.bootstrapper;
+            }
+
+            set
+            {
+                Guard.AgainstNullArgument("value", value);
+
+                this.bootstrapper = value;
+                this.OnStateChanged();
+            }
+        }
 
         public IEnumerable<Uri> Uris
         {
@@ -59,19 +76,40 @@ namespace ScriptCs.Nancy
                 }
 
                 this.uris = new ReadOnlyCollection<Uri>(value.ToList());
+                this.OnStateChanged();
             }
+        }
+
+        public bool IsStarted
+        {
+            get { return this.host != null; }
+        }
+
+        public bool IsWaiting
+        {
+            get { return this.isWaiting; }
         }
 
         // TODO (Adam): make public when https://github.com/scriptcs/scriptcs/issues/288 is released
         // i.e. when https://github.com/scriptcs/scriptcs/blob/master/src/ScriptCs/packages.config points to ServiceStack.Text 3.9.47
         // and latest master has been pushed to Chocolatey
         ////[CLSCompliant(false)]
-        internal HostConfiguration Config { get; set; }
+        internal HostConfiguration Config
+        {
+            get
+            {
+                return this.configuration;
+            }
+
+            set
+            {
+                this.configuration = value;
+                this.OnStateChanged();
+            }
+        }
 
         public NancyPack Go()
         {
-            Guard.AgainstNullProperty("Boot", this.Boot);
-
             this.Stop();
 
             this.host = this.Config != null
@@ -87,6 +125,8 @@ namespace ScriptCs.Nancy
                 this.host = null;
                 throw;
             }
+
+            this.isWaiting = false;
 
             if (!this.uris.Any())
             {
@@ -122,11 +162,25 @@ namespace ScriptCs.Nancy
             GC.SuppressFinalize(this);
         }
 
+        public NancyPack Wait()
+        {
+            this.isWaiting = true;
+            return this;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
                 this.Stop();
+            }
+        }
+
+        private void OnStateChanged()
+        {
+            if (this.IsStarted && !this.isWaiting)
+            {
+                this.Go();
             }
         }
     }
