@@ -7,14 +7,12 @@ namespace ScriptCs.Nancy
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
 
-    [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "WIP")]
-    public class NancyPack : IScriptPackContext
+    public class NancyPack : IScriptPackContext, IDisposable
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
@@ -24,6 +22,11 @@ namespace ScriptCs.Nancy
         public NancyPack()
         {
             this.Reset();
+        }
+
+        ~NancyPack()
+        {
+            this.Dispose(false);
         }
 
         public static IEnumerable<Uri> DefaultUris
@@ -103,6 +106,20 @@ namespace ScriptCs.Nancy
             }
 
             return this;
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.Stop();
+            }
         }
     }
 }
