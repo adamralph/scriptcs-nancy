@@ -85,10 +85,5 @@ namespace ScriptCs.Nancy
         {
             get { return new PathProvider(); }
         }
-
-        // NOTE (adamralph): switch off auto-registration by not calling base
-        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
-        {
-        }
     }
 }

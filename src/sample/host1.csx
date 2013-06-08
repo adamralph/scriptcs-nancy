@@ -14,8 +14,23 @@ public class IndexModule : NancyModule
 
 public class HelloModule : NancyModule
 {
-    public HelloModule()
+    public HelloModule(IGreeter greeter)
     {
-        Get["/hello"] = _ => "Hello World!";
+        Get["/hello"] = _ => greeter.Greeting;
+    }
+}
+
+public interface IGreeter
+{
+    string Greeting { get; }
+}
+
+public class Greeter : IGreeter
+{
+    private int count;
+
+    public string Greeting
+    {
+        get { return "Hello World! We've said hello " + (++count).ToString() + " time(s)." ; }
     }
 }

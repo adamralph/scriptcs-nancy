@@ -6,22 +6,29 @@ Require<NancyPack>().Use(new CustomBootstrapper()).At(new Uri("http://localhost:
 
 public class IndexModule : NancyModule
 {
-    public IndexModule(IGreetings greetings)
+    public IndexModule(IGreeter greeter)
     {
-        Get["/"] = _ => greetings.Hello;
+        Get["/"] = _ => greeter.Greeting;
     }
 }
 
-public interface IGreetings
+public interface IGreeter
 {
-    string Hello { get; }
+    string Greeting { get; }
 }
 
-public class Greetings : IGreetings
+public class Greeter : IGreeter
 {
-    public string Hello
+    private readonly string greeting;
+
+    public Greeter(string greeting)
     {
-        get { return "Hello World!"; }
+        this.greeting = greeting;
+    }
+
+    public string Greeting
+    {
+        get { return this.greeting; }
     }
 }
 
@@ -29,6 +36,6 @@ public class CustomBootstrapper : DefaultNancyPackBootstrapper
 {
     protected override void ApplicationStartup(Nancy.TinyIoc.TinyIoCContainer container, IPipelines pipelines)
     {
-         container.Register(typeof(IGreetings), typeof(Greetings));
+         container.Register(typeof(IGreeter), (f, o) => new Greeter("Hello World!"));
     }
 }
