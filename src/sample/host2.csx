@@ -2,7 +2,7 @@
 // scriptcs -install
 // scriptcs host2.csx
 
-Require<NancyPack>().Use(new CustomBootstrapper()).At(new Uri("http://localhost:8888")).Host();
+Require<NancyPack>().Use(new CustomBootstrapper()).Host();
 
 public class IndexModule : NancyModule
 {

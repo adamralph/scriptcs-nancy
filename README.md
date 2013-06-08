@@ -17,8 +17,7 @@ Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
 * Run `scriptcs`.
 * Enter `public class Foo : NancyModule { public Foo() { Get["/"] = _ => "Hi!"; } }`
-* Enter `Require<NancyPack>().Go();`
-* Browse to `http://localhost:8888/`.
+* Enter `Require<NancyPack>().Go().Browse();`
 
 Congratulations! You've created your first *interactively* self-hosted website using scriptcs and Nancy! :trophy:
 
@@ -72,14 +71,34 @@ You can import more namespaces with your own `using` statements. If you think an
 
 ## Advanced Usage
 
+### Interactive Tips
+
+When using scriptcs interactively, assign a variable to `NancyPack` to save your wrists:
+
+```C#
+> var n = Require<NancyPack>();
+> n.Go();
+> n.Browse();
+> #load "hhgtg.csx"
+> n.At(42, 54, 66).Go().BrowseAll("vogons/poetry");     // also chain method calls whenever possible
+```
+(See below for an explanation of these methods.)
+
 ### Custom URL's
 
 ```C#
-Require<NancyPack>().At(777).Go();          // http://localhost:777
-Require<NancyPack>().At(777, 888).Go();     // http://localhost:777 and http://localhost:888
-Require<NancyPack>().At("http://localhost/abc/").Go();
-Require<NancyPack>().At("http://localhost/abc/", "http://localhost/def/").Go();
+At(777)                                                 // http://localhost:777
+At(777, 888)                                            // http://localhost:777 and http://localhost:888
+At("http://localhost/abc/")
+At("http://localhost/abc/", "http://localhost/def/")
 ```
+### Interactive browsing
+
+`Browse()` opens your default browser using the root URL of the host (or the first URL if multiple URLs are being used).
+
+`BrowseAll()` opens a browser window for each root URL when multiple URLs are being used.
+
+To browse to a specific resource, pass the relative address of the resource as an argument, e.g. `Browse("hello")` or `BrowseAll("hello")`. 
 
 ### Manually registering dependencies
 
