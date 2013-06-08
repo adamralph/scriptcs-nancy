@@ -4,8 +4,10 @@
 
 namespace SampleModules
 {
+    using System;
     using Nancy;
 
+    [CLSCompliant(false)]
     public class FooModule : NancyModule
     {
         public FooModule()

@@ -7,11 +7,13 @@ namespace ScriptCs.Nancy
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
 
+    [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "WIP")]
     public class NancyPack : IScriptPackContext
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
@@ -48,7 +50,7 @@ namespace ScriptCs.Nancy
                     throw new ArgumentException("At least one of the URIs is null.");
                 }
 
-                if (value.Any(uri => !uri.ToString().EndsWith("/")))
+                if (value.Any(uri => !uri.ToString().EndsWith("/", StringComparison.Ordinal)))
                 {
                     throw new ArgumentException("Only Uri prefixes ending in '/' are allowed.", "value");
                 }
