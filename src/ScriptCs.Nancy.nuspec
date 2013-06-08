@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ScriptCs.Nancy</id>
-    <version>0.8.0</version>
+    <version>0.0.0</version>
     <title>ScriptCs.Nancy</title>
     <authors>Adam Ralph</authors>
     <projectUrl>https://github.com/adamralph/scriptcs-nancy</projectUrl>
