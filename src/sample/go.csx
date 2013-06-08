@@ -1,8 +1,9 @@
 // to run this sample, execute:
 // scriptcs -install
-// scriptcs start1.csx
+// scriptcs go.csx
 
-Require<NancyPack>().Host();
+var n = Require<NancyPack>();
+n.Go();
 
 public class IndexModule : NancyModule
 {

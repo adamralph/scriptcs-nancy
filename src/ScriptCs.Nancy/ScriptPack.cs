@@ -12,6 +12,8 @@ namespace ScriptCs.Nancy
         [CLSCompliant(false)]
         public void Initialize(IScriptPackSession session)
         {
+            Guard.AgainstNullArgument("session", session);
+
             session.ImportNamespace("Nancy");
             session.ImportNamespace("Nancy.Bootstrapper");
             session.ImportNamespace("Nancy.Conventions");
