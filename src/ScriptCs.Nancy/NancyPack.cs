@@ -12,7 +12,7 @@ namespace ScriptCs.Nancy
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
 
-    public class NancyPack : IScriptPackContext
+    public class NancyPack : IScriptPackContext, IDisposable
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
@@ -22,6 +22,11 @@ namespace ScriptCs.Nancy
         public NancyPack()
         {
             this.Reset();
+        }
+
+        ~NancyPack()
+        {
+            this.Dispose(false);
         }
 
         public static IEnumerable<Uri> DefaultUris
@@ -48,7 +53,7 @@ namespace ScriptCs.Nancy
                     throw new ArgumentException("At least one of the URIs is null.");
                 }
 
-                if (value.Any(uri => !uri.ToString().EndsWith("/")))
+                if (value.Any(uri => !uri.ToString().EndsWith("/", StringComparison.Ordinal)))
                 {
                     throw new ArgumentException("Only Uri prefixes ending in '/' are allowed.", "value");
                 }
@@ -101,6 +106,20 @@ namespace ScriptCs.Nancy
             }
 
             return this;
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.Stop();
+            }
         }
     }
 }

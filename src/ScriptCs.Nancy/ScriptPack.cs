@@ -5,6 +5,7 @@
 namespace ScriptCs.Nancy
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using ScriptCs.Contracts;
 
     public class ScriptPack : IScriptPack
@@ -25,6 +26,7 @@ namespace ScriptCs.Nancy
             session.ImportNamespace("Nancy.Validation");
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Factory method.")]
         [CLSCompliant(false)]
         public IScriptPackContext GetContext()
         {

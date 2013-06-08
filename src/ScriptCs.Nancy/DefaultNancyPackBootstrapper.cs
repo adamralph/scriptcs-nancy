@@ -15,6 +15,22 @@ namespace ScriptCs.Nancy
     [CLSCompliant(false)]
     public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
+        private static readonly string[] IgnoredAssemblyPrefixes = new[]
+            {
+                "Autofac,",
+                "Autofac.",
+                "Common.Logging",
+                "log4net,",
+                "Nancy,",
+                "Nancy.",
+                "NuGet.",
+                "PowerArgs,",
+                "Roslyn.",
+                "scriptcs,",
+                "ScriptCs.",
+                "ServiceStack.",
+            };
+
         protected override IEnumerable<Func<System.Reflection.Assembly, bool>> AutoRegisterIgnoredAssemblies
         {
             get
@@ -23,18 +39,7 @@ namespace ScriptCs.Nancy
                     .Concat(new Func<Assembly, bool>[]
                         {
                             assembly => assembly == typeof(DefaultNancyBootstrapper).Assembly,
-                            assembly => assembly.FullName.StartsWith("Autofac,", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("Autofac.", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("Common.Logging", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("log4net,", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("Nancy,", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("Nancy.", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("NuGet.", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("PowerArgs,", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("Roslyn.", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("scriptcs,", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("ScriptCs.", StringComparison.InvariantCulture),
-                            assembly => assembly.FullName.StartsWith("ServiceStack.", StringComparison.InvariantCulture),
+                            assembly => IgnoredAssemblyPrefixes.Any(prefix => assembly.FullName.StartsWith(prefix, StringComparison.Ordinal)),
                         });
             }
         }

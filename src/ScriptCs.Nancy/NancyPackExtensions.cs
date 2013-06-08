@@ -5,6 +5,7 @@
 namespace ScriptCs.Nancy
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using global::Nancy.Bootstrapper;
@@ -38,6 +39,7 @@ namespace ScriptCs.Nancy
             return pack;
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "strings", Justification = "See System.Uri.ctor().")]
         public static NancyPack At(this NancyPack pack, params string[] uriStrings)
         {
             Guard.AgainstNullArgument("pack", pack);
