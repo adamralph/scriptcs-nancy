@@ -78,7 +78,15 @@ namespace ScriptCs.Nancy
                 ? new NancyHost(this.Boot, this.Config, this.uris.ToArray())
                 : new NancyHost(this.Boot, this.uris.ToArray());
 
-            this.host.Start();
+            try
+            {
+                this.host.Start();
+            }
+            catch (Exception)
+            {
+                this.host = null;
+                throw;
+            }
 
             if (!this.uris.Any())
             {
