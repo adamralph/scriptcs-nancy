@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/adamralph/scriptcs-nancy/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Nancy script pack for scriptcs. Continue your journey down the super-duper-happy-path by self-hosting Nancy with a single line of code: Require&lt;NancyPack&gt;().Host();</description>
-    <releaseNotes>Enhancement: Automatic registration of modules in referenced assemblies - https://github.com/adamralph/scriptcs-nancy/issues/20/</releaseNotes>
+    <releaseNotes>TBD</releaseNotes>
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>
