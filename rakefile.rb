@@ -1,6 +1,7 @@
 require 'albacore'
 require 'fileutils'
 
+version = IO.read("src/ScriptCs.Nancy/Properties/AssemblyInfo.cs").split(/AssemblyInformationalVersion\("/, 2)[1].split(/"/).first
 nuget_command = "src/.nuget/NuGet.exe"
 solution = "src/ScriptCs.Nancy.sln"
 output = "bin"
@@ -32,5 +33,5 @@ desc "create the nuget package"
 exec :pack => [:build] do |cmd|
   FileUtils.mkpath output
   cmd.command = nuget_command
-  cmd.parameters "pack " + nuspec + " -OutputDirectory " + output
+  cmd.parameters "pack " + nuspec + " -Version " + version + " -OutputDirectory " + output
 end
