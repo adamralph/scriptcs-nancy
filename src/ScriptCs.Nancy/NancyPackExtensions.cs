@@ -60,9 +60,7 @@ namespace ScriptCs.Nancy
 
         public static NancyPack Reset(this NancyPack pack)
         {
-            return pack.IsStarted && !pack.IsWaiting
-                ? pack.Wait().ResetUris().ResetConfig().ResetBoot().Go()
-                : pack.ResetUris().ResetConfig().ResetBoot();
+            return pack.ResetUris().ResetConfig().ResetBoot();
         }
 
         public static NancyPack ResetBoot(this NancyPack pack)
