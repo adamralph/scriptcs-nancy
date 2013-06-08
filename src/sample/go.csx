@@ -3,9 +3,7 @@
 // scriptcs
 // #load "go.csx"
 
-var n = Require<NancyPack>();
-n.Go();
-System.Diagnostics.Process.Start("http://localhost:8888/");
+var n = Require<NancyPack>().Go().Browse();
 
 public class IndexModule : NancyModule
 {

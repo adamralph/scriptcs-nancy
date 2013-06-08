@@ -5,6 +5,7 @@
 namespace ScriptCs.Nancy
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
@@ -96,6 +97,46 @@ namespace ScriptCs.Nancy
             Console.ReadKey();
             Console.WriteLine();
             pack.Stop();
+        }
+
+        public static NancyPack Browse(this NancyPack pack)
+        {
+            return pack.Browse(string.Empty);
+        }
+
+        public static NancyPack BrowseAll(this NancyPack pack)
+        {
+            return pack.BrowseAll(string.Empty);
+        }
+
+        public static NancyPack Browse(this NancyPack pack, string path)
+        {
+            Guard.AgainstNullArgument("pack", pack);
+            Guard.AgainstNullArgument("path", path);
+
+            new Uri(pack.Uris.First(), new Uri(path, UriKind.Relative)).Browse();
+            return pack;
+        }
+
+        public static NancyPack BrowseAll(this NancyPack pack, string path)
+        {
+            Guard.AgainstNullArgument("pack", pack);
+            Guard.AgainstNullArgument("path", path);
+
+            var relativeUri = new Uri(path, UriKind.Relative);
+            foreach (var uri in pack.Uris.Select(baseUri => new Uri(baseUri, relativeUri)))
+            {
+                uri.Browse();
+            }
+
+            return pack;
+        }
+
+        private static void Browse(this Uri uri)
+        {
+            Guard.AgainstNullArgument("uri", uri);
+
+            Process.Start(uri.ToString());
         }
     }
 }
