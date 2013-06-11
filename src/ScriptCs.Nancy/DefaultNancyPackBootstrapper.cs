@@ -6,8 +6,10 @@ namespace ScriptCs.Nancy
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using Common.Logging;
     using global::Nancy;
     using global::Nancy.Bootstrapper;
     using global::Nancy.TinyIoc;
@@ -15,6 +17,7 @@ namespace ScriptCs.Nancy
     [CLSCompliant(false)]
     public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
+        private static readonly ILog Log = TinyIoCContainer.Current.Resolve<ILog>();
         private static readonly string[] IgnoredAssemblyPrefixes = new[]
             {
                 "Autofac,",
@@ -51,25 +54,20 @@ namespace ScriptCs.Nancy
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies()
                     .Where(assembly => !this.AutoRegisterIgnoredAssemblies.Any(ignore => ignore(assembly))).ToArray();
 
+                Log.InfoFormat(CultureInfo.InvariantCulture, "Searching {0} assemblies for Nancy modules", assemblies.Length.ToString(CultureInfo.InvariantCulture));
                 foreach (var assembly in assemblies.OrderBy(asm => asm.FullName))
                 {
-                    Console.WriteLine("Searching assembly: {0}", assembly.FullName);
+                    Log.DebugFormat(CultureInfo.InvariantCulture, "Searching assembly for Nancy modules: {0}", assembly.FullName);
                 }
 
                 var types = assemblies.SelectMany(assembly =>
                         assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsGenericTypeDefinition && typeof(INancyModule).IsAssignableFrom(type)))
                     .ToArray();
 
-                if (types.Length == 0)
+                Log.InfoFormat(CultureInfo.InvariantCulture, "Found {0} Nancy module(s)", types.Length.ToString(CultureInfo.InvariantCulture));
+                foreach (var type in types)
                 {
-                    Console.WriteLine("Didn't find any Nancy modules.");
-                }
-                else
-                {
-                    foreach (var type in types)
-                    {
-                        Console.WriteLine("Found Nancy module: {0}", type.FullName);
-                    }
+                    Log.DebugFormat(CultureInfo.InvariantCulture, "Found Nancy module: {0}", type.FullName);
                 }
 
                 return types.Select(type => new ModuleRegistration(type));

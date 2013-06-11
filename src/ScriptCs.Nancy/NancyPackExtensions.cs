@@ -11,9 +11,13 @@ namespace ScriptCs.Nancy
     using System.Linq;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
+    using global::Nancy.TinyIoc;
+    using ScriptCs.Contracts;
 
     public static class NancyPackExtensions
     {
+        private static readonly IConsole Console = TinyIoCContainer.Current.Resolve<IConsole>();
+
         [CLSCompliant(false)]
         public static NancyPack Use(this NancyPack pack, INancyBootstrapper bootstrapper)
         {
@@ -93,9 +97,8 @@ namespace ScriptCs.Nancy
             Guard.AgainstNullArgument("pack", pack);
 
             pack.Go();
-            Console.WriteLine("Press any key to stop hosting Nancy");
-            Console.ReadKey();
-            Console.WriteLine();
+            Console.WriteLine("Press enter to stop hosting Nancy");
+            Console.ReadLine();
             pack.Stop();
         }
 

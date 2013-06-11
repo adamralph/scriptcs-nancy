@@ -5,13 +5,26 @@
 namespace ScriptCs.Nancy
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.Diagnostics.CodeAnalysis;
+    using Common.Logging;
+    using global::Nancy.TinyIoc;
     using ScriptCs.Contracts;
 
-    public class ScriptPack : IScriptPack
+    [CLSCompliant(false)]
+    public class ScriptPack : ScriptPack<NancyPack>
     {
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Following script pack prescribed pattern")]
+        [ImportingConstructor]
+        public ScriptPack(ILog log, IConsole console)
+        {
+            TinyIoCContainer.Current.Register<ILog>(log);
+            TinyIoCContainer.Current.Register<IConsole>(console);
+            this.Context = new NancyPack();
+        }
+
         [CLSCompliant(false)]
-        public void Initialize(IScriptPackSession session)
+        public override void Initialize(IScriptPackSession session)
         {
             Guard.AgainstNullArgument("session", session);
 
@@ -24,17 +37,6 @@ namespace ScriptCs.Nancy
             session.ImportNamespace("Nancy.ModelBinding");
             session.ImportNamespace("Nancy.Security");
             session.ImportNamespace("Nancy.Validation");
-        }
-
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Factory method.")]
-        [CLSCompliant(false)]
-        public IScriptPackContext GetContext()
-        {
-            return new NancyPack();
-        }
-
-        public void Terminate()
-        {
         }
     }
 }

@@ -8,12 +8,15 @@ namespace ScriptCs.Nancy
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using Common.Logging;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
+    using global::Nancy.TinyIoc;
     using ScriptCs.Contracts;
 
     public class NancyPack : IScriptPackContext, IDisposable
     {
+        private static readonly ILog Log = TinyIoCContainer.Current.Resolve<ILog>();
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
         private ReadOnlyCollection<Uri> uris;
@@ -90,13 +93,13 @@ namespace ScriptCs.Nancy
 
             if (!this.uris.Any())
             {
-                Console.WriteLine("NOT hosting Nancy at any URL");
+                Log.Warn("NOT hosting Nancy at any URL");
             }
             else
             {
                 foreach (var uri in this.uris)
                 {
-                    Console.WriteLine("Hosting Nancy at: " + uri.ToString());
+                    Log.Info("Hosting Nancy at: " + uri.ToString());
                 }
             }
 
@@ -110,7 +113,7 @@ namespace ScriptCs.Nancy
                 this.host.Stop();
                 this.host.Dispose();
                 this.host = null;
-                Console.WriteLine("Stopped hosting Nancy");
+                Log.Info("Stopped hosting Nancy");
             }
 
             return this;
