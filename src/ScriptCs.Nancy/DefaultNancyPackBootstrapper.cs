@@ -38,7 +38,7 @@ namespace ScriptCs.Nancy
                 return base.AutoRegisterIgnoredAssemblies
                     .Concat(new Func<Assembly, bool>[]
                         {
-                            assembly => assembly == typeof(DefaultNancyBootstrapper).Assembly,
+                            ////assembly => assembly == typeof(DefaultNancyBootstrapper).Assembly,
                             assembly => IgnoredAssemblyPrefixes.Any(prefix => assembly.FullName.StartsWith(prefix, StringComparison.Ordinal)),
                         });
             }
@@ -84,6 +84,13 @@ namespace ScriptCs.Nancy
         protected override IRootPathProvider RootPathProvider
         {
             get { return new PathProvider(); }
+        }
+
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        {
+            base.ConfigureApplicationContainer(container);
+
+            container.Register<global::Nancy.Routing.IRouteCacheProvider, global::Nancy.Routing.DefaultRouteCacheProvider>();
         }
     }
 }

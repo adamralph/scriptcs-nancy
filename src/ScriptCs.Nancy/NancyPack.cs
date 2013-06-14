@@ -34,6 +34,11 @@ namespace ScriptCs.Nancy
             get { return DefaultUrisField; }
         }
 
+        public global::Nancy.Routing.IRouteCache Routes
+        {
+            get { return global::Nancy.TinyIoc.TinyIoCContainer.Current.Resolve<global::Nancy.Routing.IRouteCacheProvider>().GetCache(); }
+        }
+
         [CLSCompliant(false)]
         public INancyBootstrapper Boot { get; set; }
 
