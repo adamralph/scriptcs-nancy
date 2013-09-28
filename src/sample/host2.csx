@@ -36,6 +36,7 @@ public class CustomBootstrapper : DefaultNancyPackBootstrapper
 {
     protected override void ApplicationStartup(Nancy.TinyIoc.TinyIoCContainer container, IPipelines pipelines)
     {
-         container.Register(typeof(IGreeter), (f, o) => new Greeter("Hello World!"));
+        base.ApplicationStartup(container, pipelines);
+        container.Register(typeof(IGreeter), (f, o) => new Greeter("Hello World!"));
     }
 }
