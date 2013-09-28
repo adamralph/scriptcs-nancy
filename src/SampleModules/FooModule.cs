@@ -12,7 +12,7 @@ namespace SampleModules
     {
         public FooModule()
         {
-            Get["/foo"] = _ => "bar";
+            this.Get["/foo"] = _ => "bar";
         }
     }
 }
