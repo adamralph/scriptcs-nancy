@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/adamralph/scriptcs-nancy/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Nancy script pack for scriptcs. Continue your journey down the super-duper-happy-path by self-hosting Nancy with a single line of code: Require&lt;NancyPack&gt;().Go();</description>
-    <releaseNotes>New: Allow usage with ScriptCs 0.7.0 - https://github.com/adamralph/scriptcs-nancy/issues/48/</releaseNotes>
+    <releaseNotes>TBD</releaseNotes>
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>
