@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E52A00
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{32675FB6-555F-4532-A6FA-37200564DD52}"
 	ProjectSection(SolutionItems) = preProject
+		ScriptCs.Nancy.CustomDictionary.xml = ScriptCs.Nancy.CustomDictionary.xml
 		ScriptCs.Nancy.nuspec = ScriptCs.Nancy.nuspec
 		ScriptCs.Nancy.ruleset = ScriptCs.Nancy.ruleset
 		Settings.StyleCop = Settings.StyleCop
