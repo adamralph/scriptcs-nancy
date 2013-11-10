@@ -6,6 +6,14 @@ obj
 
 /src/packages/*
 !/src/packages/StyleCop.MSBuild.*
+/src/packages/StyleCop.MSBuild.*/*
+/src/packages/StyleCop.MSBuild.*/*.*
+!/src/packages/StyleCop.MSBuild.*/tools
+/src/packages/StyleCop.MSBuild.*/tools/*
+/src/packages/StyleCop.MSBuild.*/tools/*.*
+!/src/packages/StyleCop.MSBuild.*/tools/StyleCop.Targets
+
 /src/sample/packages/*
+!/src/sample/packages/nuget.config
 
 *.sln.ide

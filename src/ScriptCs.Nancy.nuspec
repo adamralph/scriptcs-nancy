@@ -14,8 +14,8 @@
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
     <dependencies>
-      <dependency id="Nancy.Hosting.Self" version="0.20.0" />
-      <dependency id="ScriptCs.Contracts" version="0.8.0" />
+      <dependency id="Nancy.Hosting.Self" version="0.21.1" />
+      <dependency id="ScriptCs.Contracts" version="0.8.1" />
     </dependencies>
   </metadata>
   <files>
