@@ -5,7 +5,7 @@ version = IO.read("src/ScriptCs.Nancy/Properties/AssemblyInfo.cs").split(/Assemb
 nuget_command = "src/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 solution = "src/ScriptCs.Nancy.sln"
 output = "bin"
-nuspec = "src/ScriptCs.Nancy.nuspec"
+nuspec = "src/ScriptCs.Nancy/ScriptCs.Nancy.csproj"
 
 Albacore.configure do |config|
   config.log_level = :verbose
@@ -39,5 +39,5 @@ desc "create the nuget package"
 exec :pack => [:build] do |cmd|
   FileUtils.mkpath output
   cmd.command = nuget_command
-  cmd.parameters "pack " + nuspec + " -Version " + version + " -OutputDirectory " + output
+  cmd.parameters "pack " + nuspec + " -Version " + version + " -OutputDirectory " + output + " -Properties Configuration=Release"
 end
