@@ -13,6 +13,14 @@ obj
 /src/packages/StyleCop.MSBuild.*/tools/*.*
 !/src/packages/StyleCop.MSBuild.*/tools/StyleCop.Targets
 
+!/src/packages/NuGet.CommandLine.*
+/src/packages/NuGet.CommandLine.*/*
+/src/packages/NuGet.CommandLine.*/*.*
+!/src/packages/NuGet.CommandLine.*/tools
+/src/packages/NuGet.CommandLine.*/tools/*
+/src/packages/NuGet.CommandLine.*/tools/*.*
+!/src/packages/NuGet.CommandLine.*/tools/NuGet.exe
+
 /src/sample/packages/*
 !/src/sample/packages/nuget.config
 
