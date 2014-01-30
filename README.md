@@ -85,8 +85,8 @@ At the top level, ScriptCs.Nancy provides convenience methods for registering ro
 
 ```C#
 var n = Require<NancyPack>();
-n.Get["/"] = _ => "Hello world";
-n.Post["/"] = _ => ... ; // do something else cool
+n.Get("/", _ => "Hello world");
+n.Post("/", _ => ... ); // do something else cool
 ```
 
 All the common overloads for defining DELETE, GET, OPTIONS, PATCH, POST and PUT including `async` variants are provided for you.
