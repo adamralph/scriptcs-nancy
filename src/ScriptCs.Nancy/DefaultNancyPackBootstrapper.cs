@@ -58,18 +58,20 @@ namespace ScriptCs.Nancy
 
                 var types = assemblies.SelectMany(assembly =>
                         assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsGenericTypeDefinition && typeof(INancyModule).IsAssignableFrom(type)))
-                    .ToArray();
+                    .ToList();
 
-                if (types.Length == 0)
+                if (DefaultModule.HasConstructorActions)
+                {
+                    types.Add(typeof(DefaultModule));
+                }
+
+                if (types.Count == 0)
                 {
                     Console.WriteLine("Didn't find any Nancy modules.");
                 }
                 else
                 {
-                    foreach (var type in types)
-                    {
-                        Console.WriteLine("Found Nancy module: {0}", type.FullName);
-                    }
+                    types.ForEach(type => Console.WriteLine("Found Nancy module: {0}", type.FullName));
                 }
 
                 return types.Select(type => new ModuleRegistration(type));

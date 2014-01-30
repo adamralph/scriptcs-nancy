@@ -1,6 +1,6 @@
 // to run this sample, execute:
-// scriptcs -install
-// scriptcs host2.csx
+//   scriptcs -install
+//   scriptcs host2.csx
 
 Require<NancyPack>().Use(new CustomBootstrapper()).Host();
 
