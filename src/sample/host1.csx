@@ -1,6 +1,6 @@
 // to run this sample, execute:
-// scriptcs -install
-// scriptcs host1.csx
+//   scriptcs -install
+//   scriptcs host1.csx
 
 Require<NancyPack>().Host();
 

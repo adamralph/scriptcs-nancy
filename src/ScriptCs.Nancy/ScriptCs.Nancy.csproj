@@ -42,6 +42,8 @@
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="NancyPackExtensions.Module.cs" />
+    <Compile Include="DefaultModule.cs" />
     <Compile Include="NancyPackExtensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="NancyPack.cs" />

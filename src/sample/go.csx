@@ -1,37 +1,7 @@
 // to run this sample, execute:
-// scriptcs -install
-// scriptcs
-// #load "go.csx"
+//   scriptcs -install
+//   scriptcs
+//   #load "go.csx"
+// or, just copy and paste the line of code into REPL :-)
 
-var n = Require<NancyPack>().Go().Browse();
-
-public class IndexModule : NancyModule
-{
-    public IndexModule()
-    {
-        Get["/"] = _ =>	View["index"]; // located in views folder
-    }
-}
-
-public class HelloModule : NancyModule
-{
-    public HelloModule(IGreeter greeter)
-    {
-        Get["/hello"] = _ => greeter.Greeting;
-    }
-}
-
-public interface IGreeter
-{
-    string Greeting { get; }
-}
-
-public class Greeter : IGreeter
-{
-    private int count;
-
-    public string Greeting
-    {
-        get { return "Hello World! We've said hello " + (++count).ToString() + " time(s)." ; }
-    }
-}
+var n = Require<NancyPack>().Get("/", _ => "Hello world").Go().Browse();

@@ -12,7 +12,7 @@ namespace ScriptCs.Nancy
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
 
-    public static class NancyPackExtensions
+    public static partial class NancyPackExtensions
     {
         [CLSCompliant(false)]
         public static NancyPack Use(this NancyPack pack, INancyBootstrapper bootstrapper)

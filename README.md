@@ -16,8 +16,7 @@ Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
 * Create a folder, e.g. `mkdir C:\hellonancy`.
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
 * Run `scriptcs`.
-* Enter `public class Foo : NancyModule { public Foo() { Get["/"] = _ => "Hi!"; } }`
-* Enter `Require<NancyPack>().Go().Browse();`
+* Enter `Require<NancyPack>().Get("/", _ => "Hi!").Go().Browse();`
 
 Congratulations! You've created your first *interactively* self-hosted website using scriptcs and Nancy! :trophy:
 
@@ -27,18 +26,10 @@ Congratulations! You've created your first *interactively* self-hosted website u
 * Open a command prompt *as an administrator*.
 * Create a folder, e.g. `mkdir C:\hellonancy`.
 * Navigate to your folder and run `scriptcs -install ScriptCs.Nancy`.
-* Create a file named `start.csx` containing a sample module and a magic line of code:
+* Create a file named `start.csx` containing:
 
 ```C#
-Require<NancyPack>().Host();
-
-public class SampleModule : NancyModule
-{
-    public SampleModule()
-    {
-        Get["/"] = _ => "Hello World!";
-    }
-}
+Require<NancyPack>().Get("/", _ => "Hello world").Host();
 ```
 
 * Run `scriptcs start.csx`.
@@ -46,11 +37,12 @@ public class SampleModule : NancyModule
 
 Congratulations! You've created your first *scripted* self-hosted website using scriptcs and Nancy! :trophy:
 
-(Take a look at a slightly more [advanced sample](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample/host1.csx).)
-
 ## How it works
 
-ScriptCs.Nancy auto-magically finds all modules in your script/session  (including those loaded with [`#load`](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#loading-referenced-scripts "Loading referenced scripts")) and all modules in any [referenced assemblies](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies). The names of all modules found are printed in the console window. If any modules have dependencies, they are also auto-magically wired up! :sunglasses:
+As well as any routes registered using the above in-line syntax, ScriptCs.Nancy also auto-magically finds all modules in your script/session  (including those loaded with [`#load`](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#loading-referenced-scripts "Loading referenced scripts")) and all modules in any [referenced assemblies](https://github.com/scriptcs/scriptcs/wiki/Writing-a-script#referencing-assemblies). The names of all modules found are printed in the console window. If any modules have dependencies, they are also auto-magically wired up! :sunglasses:
+
+Take a look at some samples demonstrating these behaviours in the [sample folder](https://github.com/adamralph/scriptcs-nancy/blob/master/src/sample).
+
 
 `Go()` and `Stop()` start and stop hosting. `Host()` is a convenience for script writing. It calls `Go()`, waits for the user to press a key and then calls `Stop()`. Use it in place of `Go()` in any examples if you need this behaviour.
 
@@ -77,12 +69,43 @@ When using scriptcs interactively, assign a variable to `NancyPack` to save your
 
 ```C#
 > var n = Require<NancyPack>();
+> n.Get("/", _ => "Hello world");
 > n.Go();
 > n.Browse();
 > #load "hhgtg.csx"
 > n.At(42, 54, 66).Go().BrowseAll("vogons/poetry");     // also chain method calls whenever possible
 ```
 (See below for an explanation of these methods.)
+
+Note that if you call any methods which alter the configuration of the host whist it is already running, you need to call `Go()` again for the changes to be reflected.
+
+### In-line routes
+
+At the top level, ScriptCs.Nancy provides convenience methods for registering routes without having to write a module class. E.g.
+
+```C#
+var n = Require<NancyPack>();
+n.Get["/"] = _ => "Hello world";
+n.Post["/"] = _ => ... ; // do something else cool
+```
+
+All the common overloads for defining DELETE, GET, OPTIONS, PATCH, POST and PUT including `async` variants are provided for you.
+
+Dropping down one level, you can get a reference to the `RouteBuilder` instances themselves: 
+
+```C#
+n.Get(g => g["/"] = _ => "Hello world");
+```
+
+This is useful if you want to call any methods or extension methods on `RouteBuilder` which are not wrapped by the top level convenience methods.
+
+Dropping down another level, you can get a reference to the default module instance which is used to host in-line routes:
+
+```C#
+n.Module(m => m.Get["/"] = _ => "Hello world");
+```
+
+This is useful if you want to configure the module in ways that the `RouteBuilder` does not allow for. The action that you pass to the `Module()` method will be invoked during the construction of the `DefaultModule` instance the next time you call `NancyPack.Go()`.
 
 ### Custom URL's
 
