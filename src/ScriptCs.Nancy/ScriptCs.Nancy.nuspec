@@ -10,9 +10,7 @@
     <licenseUrl>https://github.com/adamralph/scriptcs-nancy/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Nancy script pack for scriptcs. Continue your journey down the super-duper-happy-path by creating a self-hosted Nancy website with a single line of code: Require&lt;NancyPack&gt;().Get(&quot;/&quot;, _ =&gt; &quot;Hello world&quot;).Go();</description>
-    <releaseNotes>New: In-line routes - https://github.com/adamralph/scriptcs-nancy/issues/74/
-New: Upgrade to Nancy 0.22 - https://github.com/adamralph/scriptcs-nancy/issues/68/
-New: Upgrade to scriptcs 0.8.1 - https://github.com/adamralph/scriptcs-nancy/issues/59/</releaseNotes>
+    <releaseNotes>TBD</releaseNotes>
     <copyright>Copyright (c) Adam Ralph. (adam@adamralph.com)</copyright>
     <tags>scriptcs nancy selfhosting pack</tags>
   </metadata>
