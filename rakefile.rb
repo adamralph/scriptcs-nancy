@@ -2,7 +2,7 @@ require 'albacore'
 require 'fileutils'
 
 version = IO.read("src/ScriptCs.Nancy/Properties/AssemblyInfo.cs").split(/AssemblyInformationalVersion\("/, 2)[1].split(/"/).first
-nuget_command = "src/.nuget/NuGet.exe"
+nuget_command = "src/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 solution = "src/ScriptCs.Nancy.sln"
 output = "bin"
 nuspec = "src/ScriptCs.Nancy.nuspec"
@@ -14,6 +14,12 @@ end
 desc "Execute default tasks"
 task :default => [ :pack ]
 
+desc "Restore NuGet packages"
+exec :restore do |cmd|
+  cmd.command = nuget_command
+  cmd.parameters "restore #{solution}"
+end
+
 desc "Clean solution"
 msbuild :clean do |msb|
   FileUtils.rmtree output
@@ -23,7 +29,7 @@ msbuild :clean do |msb|
 end
 
 desc "Build solution"
-msbuild :build => [:clean] do |msb|
+msbuild :build => [:clean, :restore] do |msb|
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Build ]
   msb.solution = solution
