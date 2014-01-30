@@ -2,9 +2,9 @@
 
 A [scriptcs](https://github.com/scriptcs/scriptcs) [script pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs-master-list) for [Nancy](https://github.com/NancyFx/Nancy).
 
-Continue your journey down the super-duper-happy-path by self-hosting Nancy with a single line of code:
+Continue your journey down the super-duper-happy-path by creating a self-hosted Nancy website with a single line of code:
 ```C#
-Require<NancyPack>().Go();
+Require<NancyPack>().Get("/", _ => "Hello world").Host();
 ```
 
 Get it on [Nuget](https://nuget.org/packages/ScriptCs.Nancy/).
