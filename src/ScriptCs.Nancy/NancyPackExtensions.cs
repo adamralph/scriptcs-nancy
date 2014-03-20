@@ -9,6 +9,7 @@ namespace ScriptCs.Nancy
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+    using System.Threading;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
 
@@ -93,10 +94,14 @@ namespace ScriptCs.Nancy
             Guard.AgainstNullArgument("pack", pack);
 
             pack.Go();
-            Console.WriteLine("Press any key to stop hosting Nancy");
-            Console.ReadKey();
-            Console.WriteLine();
-            pack.Stop();
+            try
+            {
+                Thread.Sleep(Timeout.Infinite);
+            }
+            finally
+            {
+                pack.Stop();
+            }
         }
 
         public static NancyPack Browse(this NancyPack pack)
