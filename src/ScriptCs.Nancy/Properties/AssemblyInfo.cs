@@ -15,6 +15,9 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 
-[assembly: AssemblyVersion("0.15.0")]
-[assembly: AssemblyFileVersion("0.15.0")]
+// NOTE (adamralph): the assembly versions are fixed at 1.0.0 - only NuGet package versions matter
+[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyFileVersion("1.0.0")]
+
+// NOTE (adamralph): this is used for the NuGet package version
 [assembly: AssemblyInformationalVersion("0.15.0")]
