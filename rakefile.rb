@@ -2,7 +2,7 @@ require 'albacore'
 require 'fileutils'
 
 version = IO.read("src/ScriptCs.Nancy/Properties/AssemblyInfo.cs").split(/AssemblyInformationalVersion\("/, 2)[1].split(/"/).first
-nuget_command = "src/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
+nuget_command = "src/packages/NuGet.CommandLine.2.8.2/tools/NuGet.exe"
 solution = "src/ScriptCs.Nancy.sln"
 output = "bin"
 nuspec = "src/ScriptCs.Nancy/ScriptCs.Nancy.csproj"
