@@ -70,8 +70,6 @@ namespace ScriptCs.Nancy
 
         public NancyPack Go()
         {
-            Guard.AgainstNullProperty("Boot", this.Boot);
-
             this.Stop();
 
             this.host = this.Config != null
