@@ -5,13 +5,46 @@
 namespace ScriptCs.Nancy
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
+    using System.Threading.Tasks;
     using ScriptCs.Contracts;
 
-    public class ScriptPack : IScriptPack
+    [CLSCompliant(false)]
+    public class ScriptPack : ScriptPack<NancyPack>
     {
-        [CLSCompliant(false)]
-        public void Initialize(IScriptPackSession session)
+        private readonly ManualResetEventSlim isRunningBackgroundTask = new ManualResetEventSlim(true);
+
+        public bool IsRunningBackgroundTask
+        {
+            get
+            {
+                return !this.isRunningBackgroundTask.IsSet;
+            }
+
+            set
+            {
+                if (value)
+                {
+                    this.isRunningBackgroundTask.Reset();
+                }
+                else
+                {
+                    this.isRunningBackgroundTask.Set();
+                }
+            }
+        }
+
+        public override Task BackgroundTask
+        {
+            get
+            {
+                return !this.isRunningBackgroundTask.IsSet
+                    ? Task.Factory.StartNew(() => this.isRunningBackgroundTask.Wait())
+                    : null;
+            }
+        }
+
+        public override void Initialize(IScriptPackSession session)
         {
             Guard.AgainstNullArgument("session", session);
 
@@ -24,17 +57,8 @@ namespace ScriptCs.Nancy
             session.ImportNamespace("Nancy.ModelBinding");
             session.ImportNamespace("Nancy.Security");
             session.ImportNamespace("Nancy.Validation");
-        }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Factory method.")]
-        [CLSCompliant(false)]
-        public IScriptPackContext GetContext()
-        {
-            return new NancyPack();
-        }
-
-        public void Terminate()
-        {
+            this.Context = new NancyPack(this);
         }
     }
 }

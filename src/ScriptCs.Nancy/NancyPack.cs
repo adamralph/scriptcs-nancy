@@ -16,11 +16,16 @@ namespace ScriptCs.Nancy
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
+        private readonly ScriptPack scriptPack;
         private ReadOnlyCollection<Uri> uris;
         private NancyHost host;
 
-        public NancyPack()
+        [CLSCompliant(false)]
+        public NancyPack(ScriptPack scriptPack)
         {
+            Guard.AgainstNullArgument("scriptPack", scriptPack);
+
+            this.scriptPack = scriptPack;
             this.Reset();
         }
 
@@ -86,6 +91,7 @@ namespace ScriptCs.Nancy
                 throw;
             }
 
+            this.scriptPack.IsRunningBackgroundTask = true;
             if (!this.uris.Any())
             {
                 Console.WriteLine("NOT hosting Nancy at any URL");
@@ -108,6 +114,7 @@ namespace ScriptCs.Nancy
                 this.host.Stop();
                 this.host.Dispose();
                 this.host = null;
+                this.scriptPack.IsRunningBackgroundTask = false;
                 Console.WriteLine("Stopped hosting Nancy");
             }
 
