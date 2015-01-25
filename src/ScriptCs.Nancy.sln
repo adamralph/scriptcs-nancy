@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{785378
 		sample\go1.csx = sample\go1.csx
 		sample\host1.csx = sample\host1.csx
 		sample\host2.csx = sample\host2.csx
+		sample\nuget.config = sample\nuget.config
 		sample\packages.config = sample\packages.config
 	EndProjectSection
 EndProject
