@@ -12,6 +12,8 @@ namespace ScriptCs.Nancy
     using System.Threading;
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
+    using Microsoft.Owin.Hosting;
+    using Owin;
 
     public static partial class NancyPackExtensions
     {
@@ -25,11 +27,21 @@ namespace ScriptCs.Nancy
         }
 
         [CLSCompliant(false)]
-        public static NancyPack Use(this NancyPack pack, HostConfiguration configuration)
+        public static NancyPack Use(this NancyPack pack, Action<IAppBuilder> startup)
         {
             Guard.AgainstNullArgument("pack", pack);
 
-            pack.Config = configuration;
+            pack.Startup = startup;
+            return pack;
+        }
+
+        [CLSCompliant(false)]
+        public static NancyPack Use(this NancyPack pack, StartOptions startOptions, Action<IAppBuilder> startup)
+        {
+            Guard.AgainstNullArgument("pack", pack);
+
+            pack.StartOptions = startOptions;
+            pack.Startup = startup;
             return pack;
         }
 
@@ -62,7 +74,7 @@ namespace ScriptCs.Nancy
 
         public static NancyPack Reset(this NancyPack pack)
         {
-            return pack.ResetUris().ResetConfig().ResetBoot();
+            return pack.ResetUris().ResetBoot();
         }
 
         public static NancyPack ResetBoot(this NancyPack pack)
@@ -70,14 +82,6 @@ namespace ScriptCs.Nancy
             Guard.AgainstNullArgument("pack", pack);
 
             pack.Boot = new DefaultNancyPackBootstrapper();
-            return pack;
-        }
-
-        public static NancyPack ResetConfig(this NancyPack pack)
-        {
-            Guard.AgainstNullArgument("pack", pack);
-
-            pack.Config = new HostConfiguration();
             return pack;
         }
 
