@@ -11,13 +11,15 @@ namespace ScriptCs.Nancy
     using global::Nancy.Bootstrapper;
     using global::Nancy.Hosting.Self;
     using ScriptCs.Contracts;
+    using Microsoft.Owin.Hosting;
+    using Owin;
 
     public class NancyPack : IScriptPackContext, IDisposable
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
         private ReadOnlyCollection<Uri> uris;
-        private NancyHost host;
+        private IDisposable host;
 
         public NancyPack()
         {
@@ -62,23 +64,42 @@ namespace ScriptCs.Nancy
             }
         }
 
-        // TODO (Adam): make public when https://github.com/scriptcs/scriptcs/issues/288 is released
-        // i.e. when https://github.com/scriptcs/scriptcs/blob/master/src/ScriptCs/packages.config points to ServiceStack.Text 3.9.47
-        // and latest master has been pushed to Chocolatey
-        ////[CLSCompliant(false)]
-        internal HostConfiguration Config { get; set; }
+        public StartOptions StartOptions
+        { 
+            get;
+            set; 
+        }
+
+        public Action<IAppBuilder> Startup
+        {
+            get;
+            set;
+        }
 
         public NancyPack Go()
         {
             this.Stop();
 
-            this.host = this.Config != null
-                ? new NancyHost(this.Boot, this.Config, this.uris.ToArray())
-                : new NancyHost(this.Boot, this.uris.ToArray());
-
             try
             {
-                this.host.Start();
+                if (this.StartOptions == null)
+                {
+                    var opt = new StartOptions();
+                    foreach (var item in this.uris)
+                    {
+                        opt.Urls.Add(item.OriginalString);
+                    }
+                    this.StartOptions = opt;
+                }
+
+                if (this.Startup == null)
+                {
+                    this.host = WebApp.Start(this.StartOptions, app => app.UseNancy(options => options.Bootstrapper = this.Boot));
+                }
+                else
+                {
+                    this.host = WebApp.Start(this.StartOptions, app => this.Startup(app));
+                }
             }
             catch (Exception)
             {
@@ -86,15 +107,15 @@ namespace ScriptCs.Nancy
                 throw;
             }
 
-            if (!this.uris.Any())
+            if (!this.StartOptions.Urls.Any())
             {
                 Console.WriteLine("NOT hosting Nancy at any URL");
             }
             else
             {
-                foreach (var uri in this.uris)
+                foreach (var uri in this.StartOptions.Urls)
                 {
-                    Console.WriteLine("Hosting Nancy at: " + uri.ToString());
+                    Console.WriteLine("Hosting Nancy with OWIN at: " + uri.ToString());
                 }
             }
 
@@ -105,7 +126,6 @@ namespace ScriptCs.Nancy
         {
             if (this.host != null)
             {
-                this.host.Stop();
                 this.host.Dispose();
                 this.host = null;
                 Console.WriteLine("Stopped hosting Nancy");
