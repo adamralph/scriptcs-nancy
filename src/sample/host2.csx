@@ -4,14 +4,6 @@
 
 Require<NancyPack>().Use(new CustomBootstrapper()).Host();
 
-public class IndexModule : NancyModule
-{
-    public IndexModule(IGreeter greeter)
-    {
-        Get["/"] = _ => greeter.Greeting;
-    }
-}
-
 public interface IGreeter
 {
     string Greeting { get; }
@@ -29,6 +21,14 @@ public class Greeter : IGreeter
     public string Greeting
     {
         get { return this.greeting; }
+    }
+}
+
+public class IndexModule : NancyModule
+{
+    public IndexModule(IGreeter greeter)
+    {
+        Get["/"] = _ => greeter.Greeting;
     }
 }
 
