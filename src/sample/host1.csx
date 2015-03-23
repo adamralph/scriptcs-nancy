@@ -4,6 +4,21 @@
 
 Require<NancyPack>().Host();
 
+public interface IGreeter
+{
+    string Greeting { get; }
+}
+
+public class Greeter : IGreeter
+{
+    private int count;
+
+    public string Greeting
+    {
+        get { return "Hello World! We've said hello " + (++count).ToString() + " time(s)." ; }
+    }
+}
+
 public class IndexModule : NancyModule
 {
     public IndexModule()
@@ -20,17 +35,4 @@ public class HelloModule : NancyModule
     }
 }
 
-public interface IGreeter
-{
-    string Greeting { get; }
-}
 
-public class Greeter : IGreeter
-{
-    private int count;
-
-    public string Greeting
-    {
-        get { return "Hello World! We've said hello " + (++count).ToString() + " time(s)." ; }
-    }
-}
