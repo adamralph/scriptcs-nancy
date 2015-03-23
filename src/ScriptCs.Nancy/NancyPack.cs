@@ -115,7 +115,7 @@ namespace ScriptCs.Nancy
             {
                 foreach (var uri in this.StartOptions.Urls)
                 {
-                    Console.WriteLine("Hosting Nancy at: " + uri.ToString());
+                    Console.WriteLine("Hosting Nancy with OWIN at: " + uri.ToString());
                 }
             }
 
