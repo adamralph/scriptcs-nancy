@@ -14,6 +14,7 @@ namespace ScriptCs.Nancy
         public static NancyPack Module(this NancyPack pack, Action<DefaultModule> action)
         {
             DefaultModule.AddToConstructor(action);
+            pack.RestartIfStarted();
             return pack;
         }
 

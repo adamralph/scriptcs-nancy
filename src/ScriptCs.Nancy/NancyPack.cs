@@ -16,7 +16,9 @@ namespace ScriptCs.Nancy
     {
         private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
+        private INancyBootstrapper boot;
         private ReadOnlyCollection<Uri> uris;
+        private HostConfiguration config;
         private NancyHost host;
 
         public NancyPack()
@@ -35,7 +37,19 @@ namespace ScriptCs.Nancy
         }
 
         [CLSCompliant(false)]
-        public INancyBootstrapper Boot { get; set; }
+        public INancyBootstrapper Boot
+        {
+            get
+            {
+                return this.boot;
+            }
+
+            set
+            {
+                this.boot = value;
+                this.RestartIfStarted();
+            }
+        }
 
         public IEnumerable<Uri> Uris
         {
@@ -59,6 +73,7 @@ namespace ScriptCs.Nancy
                 }
 
                 this.uris = new ReadOnlyCollection<Uri>(value.ToList());
+                this.RestartIfStarted();
             }
         }
 
@@ -66,7 +81,19 @@ namespace ScriptCs.Nancy
         // i.e. when https://github.com/scriptcs/scriptcs/blob/master/src/ScriptCs/packages.config points to ServiceStack.Text 3.9.47
         // and latest master has been pushed to Chocolatey
         ////[CLSCompliant(false)]
-        internal HostConfiguration Config { get; set; }
+        internal HostConfiguration Config
+        {
+            get
+            {
+                return this.config;
+            }
+
+            set
+            {
+                this.config = value;
+                this.RestartIfStarted();
+            }
+        }
 
         public NancyPack Go()
         {
@@ -112,6 +139,14 @@ namespace ScriptCs.Nancy
             }
 
             return this;
+        }
+
+        public void RestartIfStarted()
+        {
+            if (this.host != null)
+            {
+                this.Go();
+            }
         }
 
         public void Dispose()
