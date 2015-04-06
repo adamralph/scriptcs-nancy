@@ -13,7 +13,6 @@ obj
 /src/packages/NuGet.CommandLine.*/tools/*.*
 !/src/packages/NuGet.CommandLine.*/tools/NuGet.exe
 
-/src/sample/packages/*
-!/src/sample/packages/nuget.config
+/src/sample/scriptcs_packages
 
 *.sln.ide
