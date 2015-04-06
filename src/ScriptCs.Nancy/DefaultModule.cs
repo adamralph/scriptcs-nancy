@@ -11,7 +11,7 @@ namespace ScriptCs.Nancy
     [CLSCompliant(false)]
     public class DefaultModule : NancyModule
     {
-        private static ConcurrentQueue<Action<DefaultModule>> constructionActions =
+        private static readonly ConcurrentQueue<Action<DefaultModule>> constructionActions =
             new ConcurrentQueue<Action<DefaultModule>>();
 
         public DefaultModule()

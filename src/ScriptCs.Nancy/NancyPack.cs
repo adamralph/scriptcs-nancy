@@ -14,7 +14,8 @@ namespace ScriptCs.Nancy
 
     public class NancyPack : IScriptPackContext, IDisposable
     {
-        private static readonly ReadOnlyCollection<Uri> DefaultUrisField = new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
+        private static readonly ReadOnlyCollection<Uri> defaultUrisField =
+            new ReadOnlyCollection<Uri>(new[] { new Uri("http://localhost:8888/") }.ToList());
 
         private INancyBootstrapper boot;
         private ReadOnlyCollection<Uri> uris;
@@ -33,7 +34,7 @@ namespace ScriptCs.Nancy
 
         public static IEnumerable<Uri> DefaultUris
         {
-            get { return DefaultUrisField; }
+            get { return defaultUrisField; }
         }
 
         [CLSCompliant(false)]
@@ -121,7 +122,7 @@ namespace ScriptCs.Nancy
             {
                 foreach (var uri in this.uris)
                 {
-                    Console.WriteLine("Hosting Nancy at: " + uri.ToString());
+                    Console.WriteLine("Hosting Nancy at: " + uri);
                 }
             }
 
