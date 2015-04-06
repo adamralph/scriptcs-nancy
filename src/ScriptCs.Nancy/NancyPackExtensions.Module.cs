@@ -13,6 +13,8 @@ namespace ScriptCs.Nancy
     {
         public static NancyPack Module(this NancyPack pack, Action<DefaultModule> action)
         {
+            Guard.AgainstNullArgument("pack", pack);
+
             DefaultModule.AddToConstructor(action);
             pack.RestartIfStarted();
             return pack;
