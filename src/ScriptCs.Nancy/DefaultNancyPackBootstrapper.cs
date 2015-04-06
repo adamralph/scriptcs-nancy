@@ -10,12 +10,11 @@ namespace ScriptCs.Nancy
     using System.Reflection;
     using global::Nancy;
     using global::Nancy.Bootstrapper;
-    using global::Nancy.TinyIoc;
 
     [CLSCompliant(false)]
     public class DefaultNancyPackBootstrapper : DefaultNancyBootstrapper
     {
-        private static readonly string[] IgnoredAssemblyPrefixes = new[]
+        private static readonly string[] ignoredAssemblyPrefixes =
             {
                 "Autofac,",
                 "Autofac.",
@@ -31,7 +30,7 @@ namespace ScriptCs.Nancy
                 "ServiceStack.",
             };
 
-        protected override IEnumerable<Func<System.Reflection.Assembly, bool>> AutoRegisterIgnoredAssemblies
+        protected override IEnumerable<Func<Assembly, bool>> AutoRegisterIgnoredAssemblies
         {
             get
             {
@@ -39,7 +38,7 @@ namespace ScriptCs.Nancy
                     .Concat(new Func<Assembly, bool>[]
                         {
                             assembly => assembly == typeof(DefaultNancyBootstrapper).Assembly,
-                            assembly => IgnoredAssemblyPrefixes.Any(prefix => assembly.FullName.StartsWith(prefix, StringComparison.Ordinal)),
+                            assembly => ignoredAssemblyPrefixes.Any(prefix => assembly.FullName.StartsWith(prefix, StringComparison.Ordinal)),
                         });
             }
         }
