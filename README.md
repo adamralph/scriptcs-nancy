@@ -1,3 +1,5 @@
+**I am no longer maintaining this project. If you would like to take it over, please let me know either by raising an issue or sending me an email.**
+
 # [![ScriptCs](https://secure.gravatar.com/avatar/5c754f646971d8bc800b9d4057931938?s=200)](http://scriptcs.net/).[![Nancy](https://secure.gravatar.com/avatar/8e00fa6da668702f8b73ac4caebfbee4?s=200)](http://nancyfx.org/)
 
 A [scriptcs](https://github.com/scriptcs/scriptcs) [script pack](https://github.com/scriptcs/scriptcs/wiki/Script-Packs-master-list) for [Nancy](https://github.com/NancyFx/Nancy).
